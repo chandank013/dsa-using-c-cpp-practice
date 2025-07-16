@@ -1,0 +1,5 @@
+                                # String
+1. Character set/ ASCII code  (American Stansered code for information exchange)
+2. Character Array
+3. String
+4. Creating a string

@@ -1,0 +1,41 @@
+📌 What is STL in C++?
+STL stands for Standard Template Library.
+It’s a powerful library in C++ that provides ready-to-use, generic classes and functions to handle common data structures and algorithms.
+
+Think of STL as a toolbox of data structures (like vector, list, map) and algorithms (like sort, search, etc.) — all built to work with any data type using templates.
+
+📦 Major Components of STL:
+1️⃣ Containers
+These are data structures used to store collections of data.
+
+Types of Containers:
+
+Sequence Containers — elements stored in linear order
+🔸 vector, list, deque, array, forward_list
+
+Associative Containers — elements accessed via key
+🔸 set, map, multiset, multimap
+
+Unordered Associative Containers — hashed storage
+🔸 unordered_set, unordered_map, unordered_multiset, unordered_multimap
+
+Container Adapters — modified interfaces for existing containers
+🔸 stack, queue, priority_queue
+
+2️⃣ Algorithms
+Predefined functions that perform operations on containers.
+Examples:
+
+sort()
+
+find()
+
+count()
+
+reverse()
+
+accumulate()
+
+binary_search()
+
+STL algorithms work with iterators, making them very flexible.

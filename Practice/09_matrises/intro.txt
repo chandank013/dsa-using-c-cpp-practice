@@ -1,0 +1,10 @@
+## Special Matrics
+
+1.Diagonal Matrics
+2.Lower Triangular Matrics
+3.Upper Triangular Matrics
+4.Symmatric Matrics
+5.Tridiagonal Matrics
+6.Band Matrics
+7.Toeplitz Matrics
+8.Sparse Matrics
