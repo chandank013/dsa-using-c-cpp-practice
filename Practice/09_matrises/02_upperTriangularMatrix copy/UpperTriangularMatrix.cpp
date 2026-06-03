@@ -1,46 +1,52 @@
 #include <iostream>
 using namespace std;
 
-class DiagonalMatrix
+class UpperTriangularMatrix
 {
 private:
     int n; // Size of the matrix
-    int *A; // Pointer to the array that holds the diagonal elements
+    int *A; // Pointer to the array that holds the upper triangular elements from column measure
 public:
-    DiagonalMatrix(int size)
+    UpperTriangularMatrix()
+    {
+        n = 2;
+        A = new int[n * (n + 1) / 2]; // Dynamically allocate memory for the upper triangular elements
+    }
+    UpperTriangularMatrix(int size)
     {
         n = size;
-        A = new int[n]; // Dynamically allocate memory for the diagonal elements
-        
+        A = new int[n * (n + 1) / 2]; // Dynamically allocate memory for the upper triangular elements
     }
+
+    ~UpperTriangularMatrix();
     void set(int i, int j, int x);
     int get(int i, int j);
     void display();
-    ~DiagonalMatrix();
+    int GetDimension() { return n; } // Function to get the dimension of the matrix
 };
 
-void DiagonalMatrix::set(int i, int j, int x)
+void UpperTriangularMatrix::set(int i, int j, int x)
 {
-    if (i == j)
-        A[i - 1] = x; // Store only diagonal elements
+    if (i <= j)
+        A[j * (j-1)/2+i-1] = x; // Store only upper triangular elements
 }
 
-int DiagonalMatrix::get(int i, int j)
+int UpperTriangularMatrix::get(int i, int j)
 {
-    if (i == j)
-        return A[i - 1]; // Return only diagonal elements
+    if (i <= j)
+        return A[j * (j-1)/2+i-1]; // Return only upper triangular elements
     else
         return 0; // Non-diagonal elements are zero
 }
 
-void DiagonalMatrix::display()
+void UpperTriangularMatrix::display()
 {
     for (int i = 1; i <= n; i++)
     {
         for (int j = 1; j <= n; j++)
         {
-            if (i == j)
-                cout << A[i - 1] << " "; // Print diagonal elements
+            if (i <= j)
+                cout << A[j * (j-1)/2+i-1] << " "; // Print Upper triangular elements
             else
                 cout << "0 "; // Non-diagonal elements are zero
         }
@@ -48,7 +54,7 @@ void DiagonalMatrix::display()
     }
 }
 
-DiagonalMatrix::~DiagonalMatrix()
+UpperTriangularMatrix::~UpperTriangularMatrix()
 {
     delete[] A; // Free dynamically allocated memory
 }
@@ -59,16 +65,19 @@ int main()
     int size;
     cout << "Enter the size of the matrix: ";
     cin >> size;
-    DiagonalMatrix m(size);
+    UpperTriangularMatrix um(size);
     int x;
-    cout << "Enter the diagonal elements of the matrix:\n";
+    cout << "Enter the upper triangular elements of the matrix:\n";
     for (int i = 1; i <= size; i++)
     {
-        cin >> x;
-        m.set(i, i, x); // Set diagonal elements
+        for (int j = 1; j <= size; j++)
+        {
+            cin >> x;
+            um.set(i, j, x);
+        }
     }
-    cout << "Diagonal matrix is:\n";
-    m.display(); // Display the diagonal matrix
+    cout << "Upper triangular matrix is:\n";
+    um.display(); // Display the upper triangular matrix
 
     return 0;
 }

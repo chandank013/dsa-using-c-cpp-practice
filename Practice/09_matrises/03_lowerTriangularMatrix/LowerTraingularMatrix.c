@@ -1,23 +1,55 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 struct Matrix
 {
-    int A[10];
+    int *A;
     int n;
 };
 
+// function for set row measure Lower triangular matrix
 void set(struct Matrix *m, int i, int j, int x)
 {
-    if (i == j)
-        m->A[i - 1] = x; // Store only diagonal elements
+    if (i >= j) // Only set value if it's in the upper triangular part
+    {
+        m->A[i * (i-1)/2+j-1] = x; // Calculate the index for upper triangular matrix storage
+    }
+   
 }
 
-void get(struct Matrix m, int i, int j)
+// function for set column measure Lower triangular matrix
+void set_col(struct Matrix *m, int i, int j, int x)
 {
-    if (i == j)
-        printf("%d ", m.A[i - 1]); // Print only diagonal elements
+    if (i>= j) // Only set value if it's in the Lower triangular part
+    {
+        m->A[m->n*(j-1)+(j-2)*(j-1)/2+i-j] = x; // Calculate the index for lower triangular matrix storage
+    }
+}
+
+// function for get value from row measure Lower triangular matrix
+int get(struct Matrix m, int i, int j)
+{
+    if (i>= j) // Only get value if it's in the lower triangular part
+    {
+        return m.A[i * (i-1)/2+j-1]; // Calculate the index for lower triangular matrix storage
+    }
     else
-        printf("0 "); // Non-diagonal elements are zero
+    {
+        return 0; // Return 0 for lower triangular part
+    }
+}
+
+// function for get value from column measure Lower triangular matrix
+int get_col(struct Matrix m, int i, int j)
+{
+    if (i >= j) // Only get value if it's in the lower triangular part
+    {
+        return m.A[m.n*(j-1)+(j-2)*(j-1)/2+i-j]; // Calculate the index for lower triangular matrix storage
+    }
+    else
+    {
+        return 0; // Return 0 for lower triangular part
+    }
 }
 
 void display(struct Matrix m)
@@ -27,122 +59,43 @@ void display(struct Matrix m)
     {
         for (j = 1; j <= m.n; j++)
         {
-            if (i == j)
-                printf("%d ", m.A[i - 1]); // Print diagonal elements
+            if (i >= j) // Only display lower triangular part
+            {
+                printf("%d ", m.A[m.n*(j-1)+(j-2)*(j-1)/2+i-j]); // Calculate the index for lower triangular matrix storage
+            }
             else
-                printf("0 "); // Non-diagonal elements are zero
+            {
+                printf("0 "); // Display 0 for lower triangular part
+            }
         }
         printf("\n");
     }
+   
 }
 
 int main()
 {
     struct Matrix m;
-    int i, x;
-    printf("Enter the size of the matrix: ");
+    printf("Enter the dimension of the matrix: ");
     scanf("%d", &m.n);
 
-    printf("Enter the diagonal elements of the matrix:\n");
-    for (i = 1; i <= m.n; i++)
+    m.A = (int *)malloc(m.n * (m.n+1) / 2 * sizeof(int)); // Allocate memory for lower triangular matrix
+
+    printf("Enter the elements of the lower triangular matrix:\n");
+    for (int i = 1; i <= m.n; i++)
     {
-        scanf("%d", &x);
-        set(&m, i, i, x); // Set diagonal elements
+        for (int j = 1; j <= m.n; j++)
+        {
+            int x;
+            scanf("%d", &x);
+            set_col(&m, i, j, x); // Set value in the matrix
+        }
     }
+    printf("\n\n");
 
-    printf("Diagonal matrix is:\n");
-    display(m); // Display the diagonal matrix
-
+    printf("The lower triangular matrix is:\n");
+    display(m); // Display the matrix
+   
     return 0;
 }
 
-
-/*// Diagonal matrix using 2D array but not efficiend due to its time complexity
-
-#include <stdio.h>
-
-#define MAX 100
-
-struct Matrix {
-    int A[MAX][MAX];
-    int n;
-};
-
-// Function to print diagonal elements
-void printDiagonal(struct Matrix m)
-{
-    int i, j;
-    for (i = 0; i < m.n; i++)
-    {
-        for (j = 0; j < m.n; j++)
-        {
-            if (i == j)
-                printf("%d ", m.A[i][j]);
-            else
-                printf("0 ");
-        }
-        printf("\n");
-    }
-}
-
-// Function to print lower triangular matrix
-void printLowerTriangular(struct Matrix m)
-{
-    int i, j;
-    for (i = 0; i < m.n; i++)
-    {
-        for (j = 0; j < m.n; j++)
-        {
-            if (i >= j)
-                printf("%d ", m.A[i][j]);
-            else
-                printf("0 ");
-        }
-        printf("\n");
-    }
-}
-
-// Function to print upper triangular matrix
-void printUpperTriangular(struct Matrix m)
-{
-    int i, j;
-    for (i = 0; i < m.n; i++)
-    {
-        for (j = 0; j < m.n; j++)
-        {
-            if (i <= j)
-                printf("%d ", m.A[i][j]);
-            else
-                printf("0 ");
-        }
-        printf("\n");
-    }
-}
-
-int main()
-{
-    struct Matrix m;
-    int i, j;
-
-    printf("Enter the size of the matrix (n x n): ");
-    scanf("%d", &m.n);
-
-    printf("Enter the elements of the matrix:\n");
-    for (i = 0; i < m.n; i++)
-    {
-        for (j = 0; j < m.n; j++)
-        {
-            scanf("%d", &m.A[i][j]);
-        }
-    }
-
-    printf("Diagonal elements of the matrix:\n");
-    printDiagonal(m);
-
-    printf("Lower triangular matrix:\n");
-    printLowerTriangular(m);
-
-    printf("Upper triangular matrix:\n");
-    printUpperTriangular(m);
-
-}*/
