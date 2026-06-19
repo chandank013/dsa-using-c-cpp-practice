@@ -22,5 +22,6 @@ int main()
     for(i=0;i<5;i++)
         printf("%d ",p[i]);
 
+    free(p);  // Free the dynamically allocated memory
     return 0;
 }

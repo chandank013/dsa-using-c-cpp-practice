@@ -30,11 +30,13 @@ int main()
     {
         p[i] = i + 1; // Initialize new elements
     }
+
     for (int i = 0; i < 10; i++)
     {
         printf("%d ", p[i]);
     }
     printf("\n");
+
     free(p); // Free the memory allocated for the array
     p = NULL; // Avoid dangling pointer
 
@@ -46,14 +48,9 @@ int main()
     {
         q[i] = p[i]; // Copy old values to new array
     }
+
     free(p); // Free the old array
     p = q; // Point p to the new array
     q = NULL; // Avoid dangling pointer
-
-
-
-
-
-
     return 0;
 }
