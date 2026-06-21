@@ -214,6 +214,10 @@ public:
     int BinarySearch(int key);
     int getlength() { return length; }
     int BinarySearchRecursion(int key, int l, int h); // Binary search using recursion
+    void LeftShift();
+    void RotateLeft();
+    void RightShift();
+    void RotateRight();
     int Get(int index);
     void Set(int index, int x);
     int Max();
@@ -371,6 +375,50 @@ void Array::Reverse() {
     delete[] B;
 }
 
+// Reverse by swapping elements
+void Array::Reverse() {
+    for (int i = 0, j = length - 1; i < j; i++, j--)
+        swap(A[i], A[j]);
+}
+
+// left shift 
+void Array::LeftShift() {
+    if (length == 0)
+        return;
+    for (int i = 0; i < length - 1; i++)
+        A[i] = A[i + 1];
+    length--;
+}
+
+// rotate left
+void Array::RotateLeft() {
+    if (length == 0)
+        return;
+    int temp = A[0];
+    for (int i = 0; i < length - 1; i++)
+        A[i] = A[i + 1];
+    A[length - 1] = temp;
+}
+
+// right shift
+void Array::RightShift() {
+    if (length == 0)
+        return;
+    for (int i = length - 1; i > 0; i--)
+        A[i] = A[i - 1];
+    length--;
+}
+
+// rotate right
+void Array::RotateRight() {
+    if (length == 0)
+        return;
+    int temp = A[length - 1];
+    for (int i = length - 1; i > 0; i--)
+        A[i] = A[i - 1];
+    A[0] = temp;
+}
+
 // InsertSort function is used to insert an element in a sorted array
 void Array::InsertSort(int x) {
     if (length == size)
@@ -511,8 +559,12 @@ int main() {
         index = arr.BinarySearchRecursion(10, 0, arr.getlength() - 1);
 
         // Get and Set an element
-        cout << "Element at index 1: " << arr.Get(1) << endl
-                << "Setting element at index 1 to 20" << endl;
+        cout << "Element at index 1: " << arr.Get(1) << endl;
+        if(index != -1)
+            cout << "Element found at index: " << index << endl;
+        else
+            cout << "Element not found" << endl;
+        
         arr.Set(1, 20);
         arr.Display();
 
@@ -526,6 +578,32 @@ int main() {
         arr.Reverse();
         cout << "Reversed array: ";
         arr.Display();
+
+        // Reverse by swapping elements
+        arr.Reverse();
+        cout << "Reversed array by swapping: ";
+        arr.Display();
+
+        // Left shift the array
+        arr.LeftShift();
+        cout << "Array after left shift: ";
+        arr.Display();
+
+        // Rotate left the array
+        arr.RotateLeft();
+        cout << "Array after left rotation: ";
+        arr.Display();
+
+        // Right shift the array
+        arr.RightShift();
+        cout << "Array after right shift: ";
+        arr.Display();
+
+        // Rotate right the array
+        arr.RotateRight();
+        cout << "Array after right rotation: ";
+        arr.Display();
+
 
         // Insert in sorted array
         arr.InsertSort(12);
@@ -575,296 +653,3 @@ int main() {
 
     return 0;
 }
-
-
-
-
-// // Main Function: Update the main function to use the Array class and provide a menu-driven interface for testing all functionalities.
-// int main() {
-//     int size;
-//     cout << "Enter the size of the array: ";
-//     cin >> size;
-
-//     Array arr(size);
-//     int choice, x, index;
-
-//     do {
-//         cout << "\nMenu\n";
-//         cout << "1. Display\n";
-//         cout << "2. Append\n";
-//         cout << "3. Insert\n";
-//         cout << "4. Delete\n";
-//         cout << "5. Linear Search\n";
-//         cout << "6. Binary Search\n";
-//         cout << "7. Get\n";
-//         cout << "8. Set\n";
-//         cout << "9. Max\n";
-//         cout << "10. Min\n";
-//         cout << "11. Sum\n";
-//         cout << "12. Average\n";
-//         cout << "13. Reverse\n";
-//         cout << "14. Insert in Sorted Array\n";
-//         cout << "15. Check if Sorted\n";
-//         cout << "16. Rearrange\n";
-//         cout << "17. Merge\n";
-//         cout << "18. Union\n";
-//         cout << "19. Intersection\n";
-//         cout << "20. Difference\n";
-//         cout << "21. Exit\n";
-//         cout << "Enter your choice: ";
-//         cin >> choice;
-
-//         switch (choice) {
-//             case 1:
-//                 arr.Display();
-//                 break;
-//             case 2:
-//                 cout << "Enter element to append: ";
-//                 cin >> x;
-//                 arr.Append(x);
-//                 break;
-//             case 3:
-//                 cout << "Enter index and element to insert: ";
-//                 cin >> index >> x;
-//                 arr.Insert(index, x);
-//                 break;
-//             case 4:
-//                 cout << "Enter index to delete: ";
-//                 cin >> index;
-//                 x = arr.Delete(index);
-//                 if (x != 0)
-//                     cout << "Deleted element is " << x << endl;
-//                 else
-//                     cout << "Invalid index\n";
-//                 break;
-//             case 5:
-//                 cout << "Enter element to search: ";
-//                 cin >> x;
-//                 index = arr.LinearSearch(x);
-//                 if (index != -1)
-//                     cout << "Element found at index " << index << endl;
-//                 else
-//                     cout << "Element not found\n";
-//                 break;
-//             case 6:
-//                 cout << "Enter element to search: ";
-//                 cin >> x;
-//                 index = arr.BinarySearch(x);
-//                 if (index != -1)
-//                     cout << "Element found at index " << index << endl;
-//                 else
-//                     cout << "Element not found\n";
-//                 break;
-//             case 7:
-//                 cout << "Enter index to get element: ";
-//                 cin >> index;
-//                 x = arr.Get(index);
-//                 if (x != -1)
-//                     cout << "Element at index " << index << " is " << x << endl;
-//                 else
-//                     cout << "Invalid index\n";
-//                 break;
-//             case 8:
-//                 cout << "Enter index and element to set: ";
-//                 cin >> index >> x;
-//                 arr.Set(index, x);
-//                 break;
-//             case 9:
-//                 cout << "Max element is " << arr.Max() << endl;
-//                 break;
-//             case 10:
-//                 cout << "Min element is " << arr.Min() << endl;
-//                 break;
-//             case 11:
-//                 cout << "Sum of elements is " << arr.Sum() << endl;
-//                 break;
-//             case 12:
-//                 cout << "Average of elements is " << arr.Avg() << endl;
-//                 break;
-//             case 13:
-//                 arr.Reverse();
-//                 cout << "Array reversed\n";
-//                 break;
-//             case 14:
-//                 cout << "Enter element to insert in sorted array: ";
-//                 cin >> x;
-//                 arr.InsertSort(x);
-//                 break;
-//             case 15:
-//                 if (arr.isSorted())
-//                     cout << "Array is sorted\n";
-//                 else
-//                     cout << "Array is not sorted\n";
-//                 break;
-//             case 16:
-//                 arr.Rearrange();
-//                 cout << "Array rearranged\n";
-//                 break;
-//             case 17: {
-//                 cout << "Enter the size of the second array: ";
-//                 int size2;
-//                 cin >> size2;
-//                 Array arr2(size2);
-//                 cout << "Enter elements of the second array:\n";
-//                 for (int i = 0; i < size2; i++) {
-//                     cin >> x;
-//                     arr2.Append(x);
-//                 }
-//                 Array *arr3 = arr.Merge(&arr2);
-//                 cout << "Merged array: ";
-//                 arr3->Display();
-//                 delete arr3;
-//                 break;
-//             }
-//             case 18: {
-//                 cout << "Enter the size of the second array: ";
-//                 int size2;
-//                 cin >> size2;
-//                 Array arr2(size2);
-//                 cout << "Enter elements of the second array:\n";
-//                 for (int i = 0; i < size2; i++) {
-//                     cin >> x;
-//                     arr2.Append(x);
-//                 }
-//                 Array *arr3 = arr.Union(&arr2);
-//                 cout << "Union of arrays: ";
-//                 arr3->Display();
-//                 delete arr3;
-//                 break;
-//             }
-//             case 19: {
-//                 cout << "Enter the size of the second array: ";
-//                 int size2;
-//                 cin >> size2;
-//                 Array arr2(size2);
-//                 cout << "Enter elements of the second array:\n";
-//                 for (int i = 0; i < size2; i++) {
-//                     cin >> x;
-//                     arr2.Append(x);
-//                 }
-//                 Array *arr3 = arr.Intersection(&arr2);
-//                 cout << "Intersection of arrays: ";
-//                 arr3->Display();
-//                 delete arr3;
-//                 break;
-//             }
-//             case 20: {
-//                 cout << "Enter the size of the second array: ";
-//                 int size2;
-//                 cin >> size2;
-//                 Array arr2(size2);
-//                 cout << "Enter elements of the second array:\n";
-//                 for (int i = 0; i < size2; i++) {
-//                     cin >> x;
-//                     arr2.Append(x);
-//                 }
-//                 Array *arr3 = arr.Difference(&arr2);
-//                 cout << "Difference of arrays: ";
-//                 arr3->Display();
-//                 delete arr3;
-//                 break;
-//             }
-//             case 21:
-//                 cout << "Exiting...\n";
-//                 break;
-//             default:
-//                 cout << "Invalid choice\n";
-//         }
-//     } while (choice != 21);
-
-//     return 0;
-// }
-
-
-
-
-
-// // Code for template Class
-
-// template <class T> // for creating generic array to coverting in to template class
-
-
-// class Array
-// {
-// private:
-//     T *A; // for dynamically ceate an array
-//     int size;
-//     int length;
-
-// public:
-//     Array() // non-parameterised constructure
-//     {
-//         size=10;
-//         A=new T[10];
-//         length=0;
-//     }
-//     Array(int sz)  // parameterised constructure
-//     {
-//         size=sz;
-//         length=10;
-//         A=new T[10];
-//     }
-
-//     ~Array()
-//     {
-//         delete[]A;
-//     }
-
-//     void Display();
-//     void Insert(int index,T element);
-//     T Delete(int index);
-
-// };
-
-// template<class T>
-
-// void Array<T>::Display()
-// {
-//     for(int i=0;i<length;i++)
-//     {
-//         cout<<A[i]<<" ";
-//     cout<<endl;
-
-//     }
-// }
-
-// template <class T>
-// void Array<T>::Insert(int index,T element)
-// {
-//     if (index>=0 && index<=length)
-//     {
-//         for(int i=length-1;i>=index;i--)
-//             A[i+1]=A[i];
-//         A[index]=element;
-//         length++;
-//     }
-// }
-
-// template <class T>
-// T Array<T>::Delete(int index)
-// {
-//     T x=0;
-//     if (index>=0 && index<length)
-//     {
-//         x=A[index];
-//         for(int i=index;i<length-1;i++)
-//         A[i]=A[i+1];
-//         length--;
-//     }
-// }
-
-// // Menu driven funtion of int function
-// int main()
-// {
-//     Array <int> arr(10);   // we can take any data type
-//     arr.Insert(0,5);
-//     arr.Insert(1,6);
-//     arr.Insert(2,9);
-//     arr.Insert(3,11);
-//     arr.Insert(4,63);
-
-//     cout<<arr.Delete(0)<<endl;
-//     arr.Display();
-
-//     return 0;
-// }
