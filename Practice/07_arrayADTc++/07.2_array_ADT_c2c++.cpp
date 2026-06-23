@@ -452,7 +452,7 @@ void Array::Rearrange() {
 }
 
 // Merge, Union, Intersection, and Difference functions are used to perform set operations on two arrays
-Array* Array::Merge(Array *arr2) {
+Array* Array::Merge(Array *arr2) {    // we can write arr[] instead of *arr2
     int i = 0, j = 0, k = 0;
     Array *arr3 = new Array(size + arr2->size);
     while (i < length && j < arr2->length) {
@@ -505,6 +505,8 @@ Array* Array::Intersection(Array *arr2) {
             j++;
         }
     }
+    for (; i < length; i++)
+        arr3->A[k++] = A[i];
     arr3->length = k;
     return arr3;
 }
