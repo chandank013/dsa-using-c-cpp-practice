@@ -2,18 +2,23 @@
 
 using namespace std;
 
-int main()
-{
-    // Validating a string to check if it contains only alphabets
-    string str = "HelloWorld";
-    bool isValid = true;
-
-    for (char c : str) {
-        if (!isalpha(c)) {
-            isValid = false;
-            break;
+int valid(char *name) {
+    int i;
+    for(i=0; name[i]!='\0'; i++) {
+        if(!((name[i]>='a' && name[i]<='z') || (name[i]>='A' && name[i]<='Z'))) {
+            return 0; // Invalid character found
         }
     }
+    return 1; // All characters are valid
+}
+
+int main()
+{
+    char name[100];
+    cout << "Enter a string: ";
+    cin.getline(name, 100);
+
+    int isValid = valid(name);
     if (isValid) {
         cout << "The string is valid and contains only alphabets." << endl;
     } else {

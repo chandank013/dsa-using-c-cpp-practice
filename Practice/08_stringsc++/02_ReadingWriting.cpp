@@ -16,7 +16,7 @@ int main() {
     cin.get(S,50);
     cout<< S<< endl;
 
-    cin.ignore();
+    cin.ignore();   // To ignore the newline character left in the input buffer
 
     char S2[50];
     cout<< "Enter the name: " << S2;
@@ -25,11 +25,6 @@ int main() {
 
 
     // Directly take two consecutive name as input
-    // char S1[50];
-    // cout<< "Enter the name: " << S1;
-    // cin.getline(S1,50);
-    // cout<< S1<< endl;
-
     // char S1[50];
     // cout<< "Enter the name: " << S1;
     // cin.getline(S1,50);
