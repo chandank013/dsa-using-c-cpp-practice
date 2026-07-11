@@ -14,10 +14,12 @@ class LinkedList
 {
     private:
     Node *first;  // Pointer to the first node in the list
+
     public:
     LinkedList();  // Default constructor
     LinkedList(int A[], int n);  // Parameterized constructor to create a list from an array
     ~LinkedList();  // Destructor to free the allocated memory
+    
     void Display();  // Function to display the elements of the list
     void Insert(int index, int x);  // Function to insert an element at a given index
     int Delete(int index);  // Function to delete an element at a given index
@@ -111,35 +113,6 @@ void LinkedList::Insert(int index, int x)
     }
 }
 
-// Function to delete an element at a given index
-int LinkedList::Delete(int index)
-{
-    Node *p, *q = NULL;
-    int x = -1;
-
-    if (index < 0 || index >= Length())
-        return -1;
-    if (index == 0)
-    {
-        p = first;
-        first = first->next;
-        x = p->data;
-        delete p;
-    }
-    else
-    {
-        p = first;
-        for (int i = 0; i < index; i++)
-        {
-            q = p;
-            p = p->next;
-        }
-        q->next = p->next;
-        x = p->data;
-        delete p;
-    }
-    return x;
-}
 
 int main()
 {
@@ -150,9 +123,6 @@ int main()
 
     l.Insert(3, 10);  // Insert 10 at index 3
     l.Display();  // Display the linked list after insertion
-
-    l.Delete(2);  // Delete the element at index 2
-    l.Display();  // Display the linked list after deletion
 
     return 0;
 }
