@@ -19,11 +19,15 @@ class LinkedList
     LinkedList();  // Default constructor
     LinkedList(int A[], int n);  // Parameterized constructor to create a list from an array
     ~LinkedList();  // Destructor to free the allocated memory
+    Node* getFirst() { return first; }  // Function to get the first node of the list
     
+
     void Display();  // Function to display the elements of the list
+    void RDisplay(Node *p);  // Recursive display of linked list
     void Insert(int index, int x);  // Function to insert an element at a given index
     int Delete(int index);  // Function to delete an element at a given index
     int Length();  // Function to calculate the length of the list
+    int Sum();  // Function to calculate the sum of the elements in the list
 };
 
 // Default constructor
@@ -70,10 +74,24 @@ void LinkedList::Display()
     Node *p = first;
     while (p)
     {
-        cout << p->data << " ";
+        cout << p->data;
         p = p->next;
+        if (p)
+            cout << " -> ";
     }
     cout << endl;
+}
+
+// Recursive display of linked list
+void LinkedList::RDisplay(Node *p)
+{
+    if (p != NULL)
+    {
+        cout << p->data;
+        if (p->next != NULL)
+            cout << " -> ";
+        RDisplay(p->next);
+    }
 }
 
 // Function to calculate the length of the list
@@ -113,6 +131,18 @@ void LinkedList::Insert(int index, int x)
     }
 }
 
+int LinkedList::Sum()
+{
+    Node *p = first;
+    int sum = 0;
+    while (p)
+    {
+        sum += p->data;
+        p = p->next;
+    }
+    return sum;
+}
+
 
 int main()
 {
@@ -120,9 +150,19 @@ int main()
     LinkedList l(A, 5);
 
     l.Display();  // Display the linked list
+    cout << endl;
 
     l.Insert(3, 10);  // Insert 10 at index 3
     l.Display();  // Display the linked list after insertion
+    cout << endl;
 
+    l.RDisplay(l.getFirst());
+    cout << endl;
+
+    // Display the length of the linked list
+    cout << "Length of the linked list: " << l.Length() << endl;
+
+    // Sum of the elements in the linked list
+    cout << "Sum of the elements in the linked list: " << l.Sum() << endl;
     return 0;
 }
