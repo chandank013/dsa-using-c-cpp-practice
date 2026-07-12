@@ -28,6 +28,8 @@ class LinkedList
     int Delete(int index);  // Function to delete an element at a given index
     int Length();  // Function to calculate the length of the list
     int Sum();  // Function to calculate the sum of the elements in the list
+    int Max();  // Function to find the maximum element in the list
+    int Min();  // Function to find the minimum element in the list
 };
 
 // Default constructor
@@ -143,6 +145,31 @@ int LinkedList::Sum()
     return sum;
 }
 
+int LinkedList::Max()
+{
+    Node *p = first;
+    int max = p->data;
+    while (p)
+    {
+        if (p->data > max)
+            max = p->data;
+        p = p->next;
+    }
+    return max;
+}
+
+int LinkedList::Min()
+{
+    Node *p = first;
+    int min = p->data;
+    while (p)
+    {
+        if (p->data < min)
+            min = p->data;
+        p = p->next;
+    }
+    return min;
+}
 
 int main()
 {
@@ -164,5 +191,11 @@ int main()
 
     // Sum of the elements in the linked list
     cout << "Sum of the elements in the linked list: " << l.Sum() << endl;
+
+    // Maximum element in the linked list
+    cout << "Maximum element in the linked list: " << l.Max() << endl;
+    // Minimum element in the linked list
+    cout << "Minimum element in the linked list: " << l.Min() << endl;
+    
     return 0;
 }
