@@ -37,6 +37,8 @@ class LinkedList
     int Max();  // Function to find the maximum element in the list
     int Min();  // Function to find the minimum element in the list
     Node* Search(int key);  // Function to search for an element in the list
+    Node* RSearch(Node *p, int key);  // Function to search for an element in the list using recursion
+    Node* ImprovedSearch(int key);  // Function to improved search for an element in the list
 
     void Insert(int index, int x);  // Function to insert an element at a given index
     bool isSorted();  // Function to check if the list is sorted    
@@ -242,6 +244,40 @@ Node* LinkedList::Search(int key)
     return NULL;
 }
 
+// recursive searching element in linked list
+Node* LinkedList::RSearch(Node *p, int key)
+{
+    if (p == NULL)
+        return NULL;
+    if (key == p->data)
+        return p;
+    return RSearch(p->next, key);
+}
+
+// improved searching element in linked list (Transposition method)
+Node* LinkedList::ImprovedSearch(int key)
+{
+    Node *p = first;
+    Node *prev = NULL;
+    while (p)
+    {
+        if (key == p->data)
+        {
+            // Move the found node to the front of the list
+            if (prev != NULL)
+            {
+                prev->next = p->next;
+                p->next = first;
+                first = p;
+            }
+            return p;
+        }
+        prev = p;
+        p = p->next;
+    }
+    return NULL;  // Element not found
+}
+
 // Function to insert an element at a given index
 void LinkedList::Insert(int index, int x)
 {
@@ -387,6 +423,20 @@ int main()
         cout << "Element found in the linked list." << endl;
     else
         cout << "Element not found in the linked list." << endl;
+    
+    // Search for an element in the linked list using recursion
+    Node *rSearchResult = l.RSearch(l.getFirst(), 4);
+    if (rSearchResult)
+        cout << "Element found in the linked list using recursion." << endl;
+    else
+        cout << "Element not found in the linked list using recursion." << endl;
+
+    // Search for an element in the linked list using improved search
+    Node *improvedSearchResult = l.ImprovedSearch(5);
+    if (improvedSearchResult)
+        cout << "Element found in the linked list using improved search." << endl;
+    else
+        cout << "Element not found in the linked list using improved search." << endl;
 
     // inserting an element in linkedlist
     l.Insert(3, 10);  // Insert 10 at index 3
