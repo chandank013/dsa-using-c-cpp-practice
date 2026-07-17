@@ -1,4 +1,6 @@
 #include<iostream>
+#include<climits>
+
 using namespace std;
 
 // Node class representing each element in the linked list
@@ -24,14 +26,21 @@ class LinkedList
 
     void Display();  // Function to display the elements of the list
     void RDisplay(Node *p);  // Recursive display of linked list
-    void Insert(int index, int x);  // Function to insert an element at a given index
-    int Delete(int index);  // Function to delete an element at a given index
+
     int Length();  // Function to calculate the length of the list
+    int Count(Node *p);  // Function to nmber ofnode of the list
+    int Count1(Node *p);  // Function to nmber ofnode of the list
     int Sum();  // Function to calculate the sum of the elements in the list
+    int Sum1(Node *p);  // Function to calculate the sum of the elements in the list
+    int Sum2(Node *p);  // Function to calculate the sum of the elements in the list using recursion
+    int Sum3(Node *p);  // Function to calculate the sum of the elements in the list using recursion
     int Max();  // Function to find the maximum element in the list
     int Min();  // Function to find the minimum element in the list
     Node* Search(int key);  // Function to search for an element in the list
+
+    void Insert(int index, int x);  // Function to insert an element at a given index
     bool isSorted();  // Function to check if the list is sorted    
+    int Delete(int index);  // Function to delete an element at a given index
     bool hasDuplicates();  // Function to check if the list has duplicate elements
     void removeDuplicates();  // Function to remove duplicates from a sorted list
     void removeDuplicatesUnsorted();  // Function to remove duplicates from an unsorted list
@@ -115,29 +124,36 @@ int LinkedList::Length()
     return len;
 }
 
-// Function to insert an element at a given index
-void LinkedList::Insert(int index, int x)
+// Function to count the node using recursion
+int LinkedList::Count(Node *p)
 {
-    Node *t, *p = first;
-    if (index < 0 || index > Length())
-        return;
-    t = new Node;
-    t->data = x;
-    t->next = NULL;
-
-    if (index == 0)
+    if(p==NULL)
     {
-        t->next = first;
-        first = t;
+        return 0;
     }
     else
     {
-        for (int i = 0; i < index - 1; i++)
-            p = p->next;
-        t->next = p->next;
-        p->next = t;
+        return Count(p->next) + 1;
     }
+
 }
+
+// Function to count the node using recursion
+int LinkedList::Count1(Node *p)
+{
+    int x=0;
+    if(p!=NULL)
+        {
+            x=Count1(p->next);
+            return x+1;
+        }
+    else
+        {
+            return x;
+        }
+    
+}
+
 
 int LinkedList::Sum()
 {
@@ -149,6 +165,42 @@ int LinkedList::Sum()
         p = p->next;
     }
     return sum;
+}
+
+int LinkedList::Sum1(Node *p)
+{
+    int sum = 0;
+    while (p)
+    {
+        sum += p->data;
+        p = p->next;
+    }
+    return sum;
+}
+
+int LinkedList::Sum2(Node *p)
+{
+    if(p==NULL)
+    {
+        return 0;
+    }
+    else
+    {
+        return Sum2(p->next) + p->data;
+    }
+}
+
+int LinkedList::Sum3(Node *p)
+{
+    int sum=0;
+    if(p)
+    {
+        sum=Sum3(p->next);
+        return sum + p->data;
+    }
+    else {
+        return 0;
+    }
 }
 
 int LinkedList::Max()
@@ -188,6 +240,30 @@ Node* LinkedList::Search(int key)
         p = p->next;
     }
     return NULL;
+}
+
+// Function to insert an element at a given index
+void LinkedList::Insert(int index, int x)
+{
+    Node *t, *p = first;
+    if (index < 0 || index > Length())
+        return;
+    t = new Node;
+    t->data = x;
+    t->next = NULL;
+
+    if (index == 0)
+    {
+        t->next = first;
+        first = t;
+    }
+    else
+    {
+        for (int i = 0; i < index - 1; i++)
+            p = p->next;
+        t->next = p->next;
+        p->next = t;
+    }
 }
 
 // check if linked list is sorted or not
@@ -276,18 +352,29 @@ int main()
     l.Display();  // Display the linked list
     cout << endl;
 
-    l.Insert(3, 10);  // Insert 10 at index 3
-    l.Display();  // Display the linked list after insertion
-    cout << endl;
-
     l.RDisplay(l.getFirst());
     cout << endl;
 
     // Display the length of the linked list
     cout << "Length of the linked list: " << l.Length() << endl;
 
+    // count the node of the linked list
+    cout << "Number of the node in linked list: " << l.Count(l.getFirst()) << endl;
+
+    // Count the node of the linked list
+    cout << "Number of the node in linked list: " << l.Count1(l.getFirst()) << endl;
+
     // Sum of the elements in the linked list
     cout << "Sum of the elements in the linked list: " << l.Sum() << endl;
+
+    // Sum of the elements in the linked list by passing parameter
+    cout << "Sum of the elements in the linked list: " << l.Sum1(l.getFirst()) << endl;
+
+    // Sum of the elements in the linked list using recursion
+    cout << "Sum of the elements in the linked list: " << l.Sum2(l.getFirst()) << endl;
+
+    // Sum of the elements in the linked list using recursion
+    cout << "Sum of the elements in the linked list: " << l.Sum3(l.getFirst()) << endl;
 
     // Maximum element in the linked list
     cout << "Maximum element in the linked list: " << l.Max() << endl;
@@ -300,6 +387,11 @@ int main()
         cout << "Element found in the linked list." << endl;
     else
         cout << "Element not found in the linked list." << endl;
+
+    // inserting an element in linkedlist
+    l.Insert(3, 10);  // Insert 10 at index 3
+    l.Display();  // Display the linked list after insertion
+    cout << endl;
 
     // Check if the linked list is sorted
     if (l.isSorted())
