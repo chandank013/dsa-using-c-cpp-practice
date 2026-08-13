@@ -231,7 +231,7 @@ void BinSort(int A[], int n)
 {
     int i, j;
     int max = findMax(A, n);
-    int *B[n];
+    int **B = (int **)malloc(sizeof(int *) * n);
     for (i = 0; i < n; i++)
     {
         B[i] = (int *)malloc(sizeof(int) * (max + 1));
@@ -262,13 +262,19 @@ void BinSort(int A[], int n)
     {
         free(B[i]);
     }
+    free(B);
 }
 
 
 // function for radix only
 void Radix(int A[], int n, int div)
 {
-    int i, j, k, B[n], C[10];
+    int i, j, k, C[10];
+    int *B = (int *)malloc(n * sizeof(int));
+    if (B == NULL)
+    {
+        return;
+    }
     for (i = 0; i < 10; i++)
     {
         C[i] = 0;
@@ -289,6 +295,7 @@ void Radix(int A[], int n, int div)
     {
         A[i] = B[i];
     }
+    free(B);
 }
 
 // function for radix sort
@@ -333,11 +340,12 @@ void ShellSort(int A[], int n)
 // main function
 int main()
 {
-    int A[] = {3, 7, 9, 10, 6, 5, 12, 4, 11, 2}, n = 10, i;
+    int n = 10;
+    int A[] = {3, 7, 9, 10, 6, 5, 12, 4, 11, 2};
     
     ShellSort(A, n);
 
-    for (i = 0; i < 10; i++)
+    for (int i = 0; i < 10; i++)
         printf("%d ", A[i]);
     printf("\n");
     return 0;
