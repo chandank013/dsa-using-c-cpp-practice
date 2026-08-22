@@ -98,6 +98,144 @@ void quickSort(int arr[], int low, int high) {
     }
 }
 
+// function for merge sort
+void mergeWithTwoArrays(int A[], int B[], int m, int n) {
+    int *c = new int[m + n];
+    int i = 0, j = 0, k = 0;
+
+    while (i < m && j < n) {
+        if (A[i] <= B[j]) {
+            c[k++] = A[i++];
+        } else {
+            c[k++] = B[j++];
+        }
+    }
+
+    while (i < m) {
+        c[k++] = A[i++];
+    }
+
+    while (j < n) {
+        c[k++] = B[j++];
+    }
+
+    for (int idx = 0; idx < k; idx++) {
+        cout << c[idx] << " ";
+    }
+
+    delete[] c;
+}
+
+// merge sort using single array
+void mergeWithSingleArray(int arr[], int l, int mid, int h) {
+    int i = l, j = mid + 1, k = l;
+    int *b = new int[h + 1];
+
+    while (i <= mid && j <= h) {
+        if (arr[i] < arr[j]) {
+            b[k++] = arr[i++];
+        } else {
+            b[k++] = arr[j++];
+        }
+    }
+
+    while (i <= mid) {
+        b[k++] = arr[i++];
+    }
+
+    while (j <= h) {
+        b[k++] = arr[j++];
+    }
+
+    for (int idx = l; idx <= h; idx++) {
+        arr[idx] = b[idx];
+    }
+
+    delete[] b;
+}
+
+// Function to merge multiple arrays into a single sorted array
+void mergeMultipleArrays(int arr[][5], int n, int m) {
+    int *result = new int[n * m];
+    int k = 0;
+
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < m; j++) {
+            result[k++] = arr[i][j];
+        }
+    }
+
+    // Sort the merged array
+    bubbleSort(result, n * m);
+
+    cout << "Merged and sorted array: ";
+    for (int i = 0; i < n * m; i++) {
+        cout << result[i] << " ";
+    }
+    cout << endl;
+
+    delete[] result;
+}
+
+// m-way merge function for merging multiple sorted arrays
+void mWayMerge(int arr[][5], int n, int m) {
+    int *result = new int[n * m];
+    int *indices = new int[n](); // Initialize indices for each array to 0
+    int k = 0;
+
+    while (k < n * m) {
+        int minIndex = -1;
+        int minValue = INT_MAX;
+
+        for (int i = 0; i < n; i++) {
+            if (indices[i] < m && arr[i][indices[i]] < minValue) {
+                minValue = arr[i][indices[i]];
+                minIndex = i;
+            }
+        }
+
+        if (minIndex != -1) {
+            result[k++] = arr[minIndex][indices[minIndex]];
+            indices[minIndex]++;
+        }
+    }
+
+    cout << "Merged and sorted array using m-way merge: ";
+    for (int i = 0; i < n * m; i++) {
+        cout << result[i] << " ";
+    }
+    cout << endl;
+
+    delete[] result;
+    delete[] indices;
+}
+
+// function for iterative version of merge sort
+void iterativeMergeSort(int arr[], int n) {
+    int p,i,l,mid,h;
+    for (p = 2; p <= n; p = p * 2)
+    {
+        for (i = 0; i + p - 1 < n; i = i + p)
+        {
+            l = i;
+            h = i + p - 1;
+            mid = (l + h) / 2;
+            mergeWithSingleArray(arr, l, mid, h);
+        }
+    }
+    if (p / 2 < n)
+        mergeWithSingleArray(arr, 0, (p / 2) - 1, n - 1);
+}
+
+// function for recursive version of merge sort
+void recursiveMergeSort(int arr[], int l, int h) {
+    if (l < h) {
+        int mid = (l + h) / 2;
+        recursiveMergeSort(arr, l, mid);
+        recursiveMergeSort(arr, mid + 1, h);
+        mergeWithSingleArray(arr, l, mid, h);
+    }
+}
 
 
 int main() {
@@ -140,7 +278,7 @@ int main() {
     cout << endl;
 
     // Reset the array for quick sort
-    int arr1[] = {64, 34, 25, 12, 22, 11, INT_MAX}; // Adding INT_MAX as a sentinel value
+    int arr1[] = {64, 34, 25, 12, 22, 11, INT32_MAX}; // Adding INT32_MAX as a sentinel value
     quickSort(arr1, 0, n - 1);
 
     cout << "Sorted array (quick sort): ";
@@ -148,6 +286,64 @@ int main() {
         cout << arr1[i] << " ";
     }
     cout << endl;
+
+    // Merge sort demonstration
+    int A[] = {1, 3, 5, 7};
+    int B[] = {2, 4, 6, 8};
+    int m = sizeof(A) / sizeof(A[0]);
+    int n = sizeof(B) / sizeof(B[0]);
+    mergeWithTwoArrays(A, B, m, n);
+    cout << endl;
+
+    // Merge sort using single array demonstration
+    int arr2[] = {12, 11, 13, 5, 6, 7};
+    int arr_size = sizeof(arr2) / sizeof(arr2[0]);
+    mergeWithSingleArray(arr2, 0, (arr_size - 1) / 2, arr_size - 1);
+    cout << "Sorted array (merge sort): ";
+    for (int i = 0; i < arr_size; i++) {
+        cout << arr2[i] << " ";
+    }
+    cout << endl;
+
+// Merging multiple arrays using the mergeMultipleArrays function
+    int arr3[3][5] = {
+        {1, 4, 7, 10, 13},
+        {2, 5, 8, 11, 14},
+        {3, 6, 9, 12, 15}
+    };
+    mergeMultipleArrays(arr3, 3, 5);
+    cout << endl;
+
+    // Merging multiple arrays using m-way merge
+    int arr3[3][5] = {
+        {1, 4, 7, 10, 13},
+        {2, 5, 8, 11, 14},
+        {3, 6, 9, 12, 15}
+    };
+    mWayMerge(arr3, 3, 5);
+    cout << endl;
+
+    // Iterative merge sort demonstration
+    int arr4[] = {12, 11, 13, 5, 6, 7};
+    int arr4_size = sizeof(arr4) / sizeof(arr4[0]);
+    iterativeMergeSort(arr4, arr4_size);
+    cout << "Sorted array (iterative merge sort): ";
+    for (int i = 0; i < arr4_size; i++) {
+        cout << arr4[i] << " ";
+    }
+    cout << endl;
+
+    // Recursive merge sort demonstration
+    int arr5[] = {12, 11, 13, 5, 6, 7};
+    int arr5_size = sizeof(arr5) / sizeof(arr5[0]);
+    recursiveMergeSort(arr5, 0, arr5_size - 1);
+    cout << "Sorted array (recursive merge sort): ";
+    for (int i = 0; i < arr5_size; i++) {
+        cout << arr5[i] << " ";
+    }
+    cout << endl;
+
+    
 
     return 0;
 }
