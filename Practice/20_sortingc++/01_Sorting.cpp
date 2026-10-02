@@ -328,9 +328,74 @@ void bucketSortLinkedList(int arr[], int n) {
     delete[] buckets;
 }
 
+// Counting sort for each digit
+void countingSort(int arr[], int n, int exp) {
+
+    int* output = new int[n];
+    int count[10] = {0};
+
+    // Count digits
+    for (int i = 0; i < n; i++) {
+        count[(arr[i] / exp) % 10]++;
+    }
+
+    // Cumulative count
+    for (int i = 1; i < 10; i++) {
+        count[i] += count[i - 1];
+    }
+
+    // Build output array
+    for (int i = n - 1; i >= 0; i--) {
+
+        int digit = (arr[i] / exp) % 10;
+
+        output[count[digit] - 1] = arr[i];
+
+        count[digit]--;
+    }
+
+    // Copy output back
+    for (int i = 0; i < n; i++) {
+        arr[i] = output[i];
+    }
+
+    delete[] output;
+}
+
+void radixSort(int arr[], int n) {
+
+    // Find maximum element
+    int max = arr[0];
+
+    for (int i = 1; i < n; i++) {
+        if (arr[i] > max) {
+            max = arr[i];
+        }
+    }
+
+    // Sort by each digit
+    for (int exp = 1; max / exp > 0; exp *= 10) {
+        countingSort(arr, n, exp);
+    }
+}
+
+// shell sort function
+void shellSort(int arr[], int n) {
+    for (int gap = n / 2; gap > 0; gap /= 2) {
+        for (int i = gap; i < n; i++) {
+            int temp = arr[i];
+            int j;
+            for (j = i; j >= gap && arr[j - gap] > temp; j -= gap) {
+                arr[j] = arr[j - gap];
+            }
+            arr[j] = temp;
+        }
+    }
+}
+
 int main() {
     int arr[] = {64, 34, 25, 12, 22, 11, 90};
-    int n = 7;
+    int n = sizeof(arr) / sizeof(arr[0]);
 
     bubbleSort(arr, n);
 
@@ -368,7 +433,7 @@ int main() {
     cout << endl;
 
     // Reset the array for quick sort
-    int arr1[] = {64, 34, 25, 12, 22, 11, INT32_MAX}; // Adding INT32_MAX as a sentinel value
+    int arr1[] = {64, 34, 25, 12, 22, 11, INT_MAX}; // Adding INT32_MAX as a sentinel value
     quickSort(arr1, 0, n - 1);
 
     cout << "Sorted array (quick sort): ";
@@ -381,8 +446,8 @@ int main() {
     int A[] = {1, 3, 5, 7};
     int B[] = {2, 4, 6, 8};
     int m = sizeof(A) / sizeof(A[0]);
-    int n = sizeof(B) / sizeof(B[0]);
-    mergeWithTwoArrays(A, B, m, n);
+    int n2 = sizeof(B) / sizeof(B[0]);
+    mergeWithTwoArrays(A, B, m, n2);
     cout << endl;
 
     // Merge sort using single array demonstration
@@ -395,7 +460,7 @@ int main() {
     }
     cout << endl;
 
-// Merging multiple arrays using the mergeMultipleArrays function
+    // Merging multiple arrays using the mergeMultipleArrays function
     int arr3[3][5] = {
         {1, 4, 7, 10, 13},
         {2, 5, 8, 11, 14},
@@ -405,61 +470,81 @@ int main() {
     cout << endl;
 
     // Merging multiple arrays using m-way merge
-    int arr3[3][5] = {
+    int arr4[3][5] = {
         {1, 4, 7, 10, 13},
         {2, 5, 8, 11, 14},
         {3, 6, 9, 12, 15}
     };
-    mWayMerge(arr3, 3, 5);
+    mWayMerge(arr4, 3, 5);
     cout << endl;
 
     // Iterative merge sort demonstration
-    int arr4[] = {12, 11, 13, 5, 6, 7};
-    int arr4_size = sizeof(arr4) / sizeof(arr4[0]);
-    iterativeMergeSort(arr4, arr4_size);
-    cout << "Sorted array (iterative merge sort): ";
-    for (int i = 0; i < arr4_size; i++) {
-        cout << arr4[i] << " ";
-    }
-    cout << endl;
-
-    // Recursive merge sort demonstration
     int arr5[] = {12, 11, 13, 5, 6, 7};
     int arr5_size = sizeof(arr5) / sizeof(arr5[0]);
-    recursiveMergeSort(arr5, 0, arr5_size - 1);
-    cout << "Sorted array (recursive merge sort): ";
+    iterativeMergeSort(arr5, arr5_size);
+    cout << "Sorted array (iterative merge sort): ";
     for (int i = 0; i < arr5_size; i++) {
         cout << arr5[i] << " ";
     }
     cout << endl;
 
-    // Count sort demonstration
-    int arr6[] = {4, 2, 2, 8, 3, 3, 1};
+    // Recursive merge sort demonstration
+    int arr6[] = {12, 11, 13, 5, 6, 7};
     int arr6_size = sizeof(arr6) / sizeof(arr6[0]);
-    countSort(arr6, arr6_size);
-    cout << "Sorted array (count sort): ";
+    recursiveMergeSort(arr6, 0, arr6_size - 1);
+    cout << "Sorted array (recursive merge sort): ";
     for (int i = 0; i < arr6_size; i++) {
         cout << arr6[i] << " ";
     }
     cout << endl;
 
-    // Bucket sort demonstration
+    // Count sort demonstration
     int arr7[] = {4, 2, 2, 8, 3, 3, 1};
     int arr7_size = sizeof(arr7) / sizeof(arr7[0]);
-    bucketSort(arr7, arr7_size);
-    cout << "Sorted array (bucket sort): ";
+    countSort(arr7, arr7_size);
+    cout << "Sorted array (count sort): ";
     for (int i = 0; i < arr7_size; i++) {
         cout << arr7[i] << " ";
     }
     cout << endl;
 
-    // Bucket sort using linked list demonstration
+    // Bucket sort demonstration
     int arr8[] = {4, 2, 2, 8, 3, 3, 1};
     int arr8_size = sizeof(arr8) / sizeof(arr8[0]);
-    bucketSortLinkedList(arr8, arr8_size);
-    cout << "Sorted array (bucket sort with linked list): ";
+    bucketSort(arr8, arr8_size);
+    cout << "Sorted array (bucket sort): ";
     for (int i = 0; i < arr8_size; i++) {
         cout << arr8[i] << " ";
+    }
+    cout << endl;
+
+    // Bucket sort using linked list demonstration
+    int arr9[] = {4, 2, 2, 8, 3, 3, 1};
+    int arr9_size = sizeof(arr9) / sizeof(arr9[0]);
+    bucketSortLinkedList(arr9, arr9_size);
+    cout << "Sorted array (bucket sort with linked list): ";
+    for (int i = 0; i < arr9_size; i++) {
+        cout << arr9[i] << " ";
+    }
+    cout << endl;
+
+    // Radix sort demonstration
+    int arr10[] = {170, 45, 75, 90,802, 24, 2, 66};
+    int arr10_size = sizeof(arr10) / sizeof(arr10[0]);
+    radixSort(arr10, arr10_size);
+    cout << "Sorted array (radix sort): ";
+    for (int i = 0; i < arr10_size; i++) {
+        cout << arr10[i] << " ";
+    }
+    cout << endl;
+
+    // Shell sort demonstration
+    int arr11[] = {12, 34, 54, 2, 3};
+    int arr11_size = sizeof(arr11) / sizeof(arr11[0]);
+    shellSort(arr11, arr11_size);
+    cout << "Sorted array (shell sort): ";
+    for (int i = 0; i < arr11_size; i++) {
+        cout << arr11[i] << " ";
     }
     cout << endl;
 
