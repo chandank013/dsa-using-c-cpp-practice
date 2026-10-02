@@ -1,6 +1,7 @@
 #include <iostream>
 #include <algorithm>
 #include <climits>
+#include <vector>
 
 using namespace std;
 
@@ -237,6 +238,95 @@ void recursiveMergeSort(int arr[], int l, int h) {
     }
 }
 
+// count sort function
+void countSort(int arr[], int n) {
+    int max = *max_element(arr, arr + n);
+    int *count = new int[max + 1]();
+
+    for (int i = 0; i < n; i++) {
+        count[arr[i]]++;
+    }
+
+    int k = 0;
+    for (int i = 0; i <= max; i++) {
+        while (count[i] > 0) {
+            arr[k++] = i;
+            count[i]--;
+        }
+    }
+
+    delete[] count;
+}
+
+// bin/bucket sort function
+void bucketSort(int arr[], int n) {
+    int max = *max_element(arr, arr + n);
+    int min = *min_element(arr, arr + n);
+    
+    int bucketCount = max - min + 1;
+    int* buckets = new int[bucketCount]();
+
+    // initialize buckets with 0
+    for (int i = 0; i < bucketCount; i++) {
+        buckets[i] = 0;
+    }
+
+    // count the elements in each bucket
+    for (int i = 0; i < n; i++) {
+        buckets[arr[i] - min]++;
+    }
+
+    // reconstruct the sorted array
+    int k = 0;
+    for (int i = 0; i < bucketCount; i++) {
+        while (buckets[i] > 0) {
+            arr[k++] = i + min;
+            buckets[i]--;
+        }
+    }
+
+    delete[] buckets;
+}
+
+// bin/bucket sort function using linked list
+struct Node {
+    int data;
+    Node* next;
+};
+
+void bucketSortLinkedList(int arr[], int n) {
+    int max = *max_element(arr, arr + n);
+    int min = *min_element(arr, arr + n);
+    
+    int bucketCount = max - min + 1;
+    Node** buckets = new Node*[bucketCount]();
+
+    // initialize buckets with nullptr
+    for (int i = 0; i < bucketCount; i++) {
+        buckets[i] = nullptr;
+    }
+
+    // insert elements into buckets
+    for (int i = 0; i < n; i++) {
+        int index = arr[i] - min;
+        Node* newNode = new Node{arr[i], buckets[index]};
+        buckets[index] = newNode;
+    }
+
+    // reconstruct the sorted array
+    int k = 0;
+    for (int i = 0; i < bucketCount; i++) {
+        Node* current = buckets[i];
+        while (current != nullptr) {
+            arr[k++] = current->data;
+            Node* temp = current;
+            current = current->next;
+            delete temp; // free memory
+        }
+    }
+
+    delete[] buckets;
+}
 
 int main() {
     int arr[] = {64, 34, 25, 12, 22, 11, 90};
@@ -343,7 +433,35 @@ int main() {
     }
     cout << endl;
 
-    
+    // Count sort demonstration
+    int arr6[] = {4, 2, 2, 8, 3, 3, 1};
+    int arr6_size = sizeof(arr6) / sizeof(arr6[0]);
+    countSort(arr6, arr6_size);
+    cout << "Sorted array (count sort): ";
+    for (int i = 0; i < arr6_size; i++) {
+        cout << arr6[i] << " ";
+    }
+    cout << endl;
+
+    // Bucket sort demonstration
+    int arr7[] = {4, 2, 2, 8, 3, 3, 1};
+    int arr7_size = sizeof(arr7) / sizeof(arr7[0]);
+    bucketSort(arr7, arr7_size);
+    cout << "Sorted array (bucket sort): ";
+    for (int i = 0; i < arr7_size; i++) {
+        cout << arr7[i] << " ";
+    }
+    cout << endl;
+
+    // Bucket sort using linked list demonstration
+    int arr8[] = {4, 2, 2, 8, 3, 3, 1};
+    int arr8_size = sizeof(arr8) / sizeof(arr8[0]);
+    bucketSortLinkedList(arr8, arr8_size);
+    cout << "Sorted array (bucket sort with linked list): ";
+    for (int i = 0; i < arr8_size; i++) {
+        cout << arr8[i] << " ";
+    }
+    cout << endl;
 
     return 0;
 }
