@@ -496,6 +496,26 @@ void LinkedList::merge(LinkedList &l2)
     l2.first = NULL;  // Set the second list's first pointer to NULL
 }
 
+// Function to check if there is a loop in the linked list
+void LinkedList::checkLoop()
+{
+    Node *p = first;
+    Node *q = first;
+
+    do
+    {
+        p = p->next;  // Move p by one step
+        q = q->next;  // Move q by one step
+        if (q != NULL)
+            q = q->next;  // Move q by an additional step if it's not NULL
+    } while (p && q && p != q);  // Continue until p and q meet or reach the end
+
+    if (p == q)  // If p and q meet, there is a loop
+        cout << "Loop found in the linked list." << endl;
+    else
+        cout << "No loop found in the linked list." << endl;
+}
+
 int main()
 {
     int A[] = {1, 2, 3, 4, 5};
@@ -610,13 +630,13 @@ int main()
     // l.Display();  // Display the linked list after concatenation
     // cout << endl;
 
-    // Merge two sorted linked lists
-    int C[] = {1, 3, 5};
-    LinkedList l3(C, 3);
-    l.merge(l3);
-    cout << "Linked list after merging: ";
-    l.Display();  // Display the linked list after merging
-    cout << endl;
+    // // Merge two sorted linked lists
+    // int C[] = {1, 3, 5};
+    // LinkedList l3(C, 3);
+    // l.merge(l3);
+    // cout << "Linked list after merging: ";
+    // l.Display();  // Display the linked list after merging
+    // cout << endl;
 
     // Check for loop in the linked list
     cout << "Checking for loop in the linked list: ";
