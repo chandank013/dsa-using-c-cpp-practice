@@ -23,6 +23,7 @@ class circularLinkedList
     Node* getFirst() { return head; }  // Function to get the first node of the list
 
     void Display();  // Function to display the elements of the list
+    void rDisplay(Node *p);  // Recursive function to display the elements of the list
 };
 
 // Default constructor
@@ -86,6 +87,22 @@ void circularLinkedList::Display()
     cout << endl;  // Print a newline at the end
 }
 
+// Recursive function to display the elements of the circular linked list
+void circularLinkedList::rDisplay(Node *p)
+{
+    static int flag = 0;  // Static variable to track if we have looped back to the first node
+
+    if (p != head || flag == 0)  // If we haven't looped back or it's the first call
+    {
+        flag = 1;  // Set the flag to indicate we have started displaying
+        cout << p->data << " ";  // Print the data of the current node
+        rDisplay(p->next);  // Recursively call rDisplay for the next node
+    }
+    flag = 0;  // Reset the flag after finishing the display
+}
+
+
+
 int main()
 {
     int A[] = {1, 2, 3, 4, 5};
@@ -94,7 +111,10 @@ int main()
     cl.Display();  // Display the circular linked list
     cout << endl;
 
-    // Additional operations can be performed here
+    // Display the circular linked list using recursion
+    cout << "Recursive Display: ";
+    cl.rDisplay(cl.getFirst());
+    cout << endl;
 
     return 0;
 }
