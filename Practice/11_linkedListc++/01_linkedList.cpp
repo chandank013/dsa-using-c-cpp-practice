@@ -46,6 +46,13 @@ class LinkedList
     bool hasDuplicates();  // Function to check if the list has duplicate elements
     void removeDuplicates();  // Function to remove duplicates from a sorted list
     void removeDuplicatesUnsorted();  // Function to remove duplicates from an unsorted list
+    void Reverse();  // Function to reverse the linked list
+    void reverseUsingSlidingPointers();  // Function to reverse the linked list using sliding pointers
+    void reverseUsingRecursion(Node *q, Node *p);  // Function to reverse the linked list using recursion
+    void concatenate(LinkedList &l2);  // Function to concatenate two linked lists
+    void merge(LinkedList &l2);  // Function to merge two sorted linked lists
+    void checkLoop();  // Function to check if there is a loop in the linked list
+
 
 };
 
@@ -380,6 +387,115 @@ void LinkedList::removeDuplicatesUnsorted()
     }
 }
 
+// reversing the linked list
+void LinkedList::Reverse()
+{
+    Node *p=first;
+    int *A=new int[Length()];
+    int i=0;
+
+    while(p!=NULL)
+    {
+        A[i]=p->data;
+        p=p->next;
+        i++;
+    }
+    p=first;
+    i--;
+    while(p!=NULL)
+    {
+        p->data=A[i];
+        p=p->next;
+        i--;
+    }
+    delete[] A;
+}
+
+// reverse the linked list using sliding pointers
+void LinkedList::reverseUsingSlidingPointers()
+{
+    Node *p = first;
+    Node *q = NULL;
+    Node *r = NULL;
+
+    while (p != NULL)
+    {
+        r = q;
+        q = p;
+        p = p->next;
+        q->next = r;
+    }
+    first = q;
+}
+
+// reverse the linked list using recursion
+void LinkedList::reverseUsingRecursion(Node *q, Node *p)
+{
+    if (p != NULL)
+    {
+        reverseUsingRecursion(p, p->next);
+        p->next = q;
+    }
+    else
+    {
+        first = q;
+    }
+}
+
+// Function to concatenate two linked lists
+void LinkedList::concatenate(LinkedList &l2)
+{
+    Node *p = first;
+    while (p->next != NULL)
+        p = p->next;
+    p->next = l2.first;
+    l2.first = NULL;  // Set the second list's first pointer to NULL
+}
+
+// Function to merge two sorted linked lists
+void LinkedList::merge(LinkedList &l2)
+{
+    Node *p = first;
+    Node *q = l2.first;
+    Node *last = NULL;
+
+    if (p->data < q->data)
+    {
+        first = last = p;
+        p = p->next;
+        last->next = NULL;
+    }
+    else
+    {
+        first = last = q;
+        q = q->next;
+        last->next = NULL;
+    }
+
+    while (p && q != NULL)
+    {
+        if (p->data < q->data)
+        {
+            last->next = p;
+            last = p;
+            p = p->next;
+            last->next = NULL;
+        }
+        else
+        {
+            last->next = q;
+            last = q;
+            q = q->next;
+            last->next = NULL;
+        }
+    }
+
+    if (p) last->next = p;  // If there are remaining nodes in the first list
+    if (q) last->next = q;  // If there are remaining nodes in the second list
+
+    l2.first = NULL;  // Set the second list's first pointer to NULL
+}
+
 int main()
 {
     int A[] = {1, 2, 3, 4, 5};
@@ -388,82 +504,124 @@ int main()
     l.Display();  // Display the linked list
     cout << endl;
 
-    l.RDisplay(l.getFirst());
-    cout << endl;
+    // l.RDisplay(l.getFirst());
+    // cout << endl;
 
-    // Display the length of the linked list
-    cout << "Length of the linked list: " << l.Length() << endl;
+    // // Display the length of the linked list
+    // cout << "Length of the linked list: " << l.Length() << endl;
 
-    // count the node of the linked list
-    cout << "Number of the node in linked list: " << l.Count(l.getFirst()) << endl;
+    // // count the node of the linked list
+    // cout << "Number of the node in linked list: " << l.Count(l.getFirst()) << endl;
 
-    // Count the node of the linked list
-    cout << "Number of the node in linked list: " << l.Count1(l.getFirst()) << endl;
+    // // Count the node of the linked list
+    // cout << "Number of the node in linked list: " << l.Count1(l.getFirst()) << endl;
 
-    // Sum of the elements in the linked list
-    cout << "Sum of the elements in the linked list: " << l.Sum() << endl;
+    // // Sum of the elements in the linked list
+    // cout << "Sum of the elements in the linked list: " << l.Sum() << endl;
 
-    // Sum of the elements in the linked list by passing parameter
-    cout << "Sum of the elements in the linked list: " << l.Sum1(l.getFirst()) << endl;
+    // // Sum of the elements in the linked list by passing parameter
+    // cout << "Sum of the elements in the linked list: " << l.Sum1(l.getFirst()) << endl;
 
-    // Sum of the elements in the linked list using recursion
-    cout << "Sum of the elements in the linked list: " << l.Sum2(l.getFirst()) << endl;
+    // // Sum of the elements in the linked list using recursion
+    // cout << "Sum of the elements in the linked list: " << l.Sum2(l.getFirst()) << endl;
 
-    // Sum of the elements in the linked list using recursion
-    cout << "Sum of the elements in the linked list: " << l.Sum3(l.getFirst()) << endl;
+    // // Sum of the elements in the linked list using recursion
+    // cout << "Sum of the elements in the linked list: " << l.Sum3(l.getFirst()) << endl;
 
-    // Maximum element in the linked list
-    cout << "Maximum element in the linked list: " << l.Max() << endl;
-    // Minimum element in the linked list
-    cout << "Minimum element in the linked list: " << l.Min() << endl;
+    // // Maximum element in the linked list
+    // cout << "Maximum element in the linked list: " << l.Max() << endl;
+    // // Minimum element in the linked list
+    // cout << "Minimum element in the linked list: " << l.Min() << endl;
 
-    // Search for an element in the linked list
-    Node *searchResult = l.Search(3);
-    if (searchResult)
-        cout << "Element found in the linked list." << endl;
-    else
-        cout << "Element not found in the linked list." << endl;
+    // // Search for an element in the linked list
+    // Node *searchResult = l.Search(3);
+    // if (searchResult)
+    //     cout << "Element found in the linked list." << endl;
+    // else
+    //     cout << "Element not found in the linked list." << endl;
     
-    // Search for an element in the linked list using recursion
-    Node *rSearchResult = l.RSearch(l.getFirst(), 4);
-    if (rSearchResult)
-        cout << "Element found in the linked list using recursion." << endl;
-    else
-        cout << "Element not found in the linked list using recursion." << endl;
+    // // Search for an element in the linked list using recursion
+    // Node *rSearchResult = l.RSearch(l.getFirst(), 4);
+    // if (rSearchResult)
+    //     cout << "Element found in the linked list using recursion." << endl;
+    // else
+    //     cout << "Element not found in the linked list using recursion." << endl;
 
-    // Search for an element in the linked list using improved search
-    Node *improvedSearchResult = l.ImprovedSearch(5);
-    if (improvedSearchResult)
-        cout << "Element found in the linked list using improved search." << endl;
-    else
-        cout << "Element not found in the linked list using improved search." << endl;
+    // // Search for an element in the linked list using improved search
+    // Node *improvedSearchResult = l.ImprovedSearch(5);
+    // if (improvedSearchResult)
+    //     cout << "Element found in the linked list using improved search." << endl;
+    // else
+    //     cout << "Element not found in the linked list using improved search." << endl;
 
-    // inserting an element in linkedlist
-    l.Insert(3, 10);  // Insert 10 at index 3
-    l.Display();  // Display the linked list after insertion
+    // // inserting an element in linkedlist
+    // l.Insert(3, 10);  // Insert 10 at index 3
+    // l.Display();  // Display the linked list after insertion
+    // cout << endl;
+
+    // // Check if the linked list is sorted
+    // if (l.isSorted())
+    //     cout << "The linked list is sorted." << endl;
+    // else
+    //     cout << "The linked list is not sorted." << endl;
+
+    // // Check for duplicates in the linked list
+    // if (l.hasDuplicates())
+    //     cout << "The linked list has duplicate elements." << endl;
+    // else
+    //     cout << "The linked list does not have duplicate elements." << endl;
+    // cout << endl;
+
+    // // Remove duplicates from the linked list (if any)
+    // l.removeDuplicates();
+    // cout << "Linked list after removing duplicates: ";
+    // l.Display();  // Display the linked list after removing duplicates
+    // cout << endl;
+
+    // // Remove duplicates from an unsorted linked list (if any)
+    // l.removeDuplicatesUnsorted();
+    // cout << "Linked list after removing duplicates from unsorted list: ";
+    // l.Display();
+    // cout << endl;
+
+    // // Reverse the linked list
+    // l.Reverse();
+    // cout << "Linked list after reversing: ";
+    // l.Display();  // Display the linked list after reversing
+    // cout << endl;
+
+    // // Reverse the linked list using sliding pointers
+    // l.reverseUsingSlidingPointers();
+    // cout << "Linked list after reversing using sliding pointers: ";
+    // l.Display();  // Display the linked list after reversing using sliding pointers
+    // cout << endl;
+
+    // // Reverse the linked list using recursion
+    // l.reverseUsingRecursion(nullptr, l.getFirst());
+    // cout << "Linked list after reversing using recursion: ";
+    // l.Display();  // Display the linked list after reversing using recursion
+    // cout << endl;
+
+    // // Concatenate two linked lists
+    // int B[] = {6, 7, 8};
+    // LinkedList l2(B, 3);
+    // l.concatenate(l2);
+    // cout << "Linked list after concatenation: ";
+    // l.Display();  // Display the linked list after concatenation
+    // cout << endl;
+
+    // Merge two sorted linked lists
+    int C[] = {1, 3, 5};
+    LinkedList l3(C, 3);
+    l.merge(l3);
+    cout << "Linked list after merging: ";
+    l.Display();  // Display the linked list after merging
     cout << endl;
 
-    // Check if the linked list is sorted
-    if (l.isSorted())
-        cout << "The linked list is sorted." << endl;
-    else
-        cout << "The linked list is not sorted." << endl;
-
-    // Check for duplicates in the linked list
-    if (l.hasDuplicates())
-        cout << "The linked list has duplicate elements." << endl;
-    else
-        cout << "The linked list does not have duplicate elements." << endl;
-
-    // Remove duplicates from the linked list (if any)
-    l.removeDuplicates();
-    cout << "Linked list after removing duplicates: ";
-    l.Display();  // Display the linked list after removing duplicates
-
-    // Remove duplicates from an unsorted linked list (if any)
-    l.removeDuplicatesUnsorted();
-    cout << "Linked list after removing duplicates from unsorted list: ";
-    l.Display();
+    // Check for loop in the linked list
+    cout << "Checking for loop in the linked list: ";
+    l.checkLoop();
+    cout << endl;
 
     return 0;
 }
