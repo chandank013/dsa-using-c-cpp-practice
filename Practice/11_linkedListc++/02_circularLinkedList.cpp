@@ -23,6 +23,7 @@ class circularLinkedList
     Node* getFirst() { return head; }  // Function to get the first node of the list
 
     void Display();  // Function to display the elements of the list
+    int length();  // Function to get the length of the circular linked list
     void rDisplay(Node *p);  // Recursive function to display the elements of the list
     void insert(int index, int x);  // Function to insert an element at a given index
     void Delete(int index);  // Function to delete an element at a given index
@@ -103,10 +104,26 @@ void circularLinkedList::rDisplay(Node *p)
     flag = 0;  // Reset the flag after finishing the display
 }
 
+// Function to get the length of the circular linked list
+int circularLinkedList::length()
+{
+    if (head == NULL) return 0;  // If the list is empty, return 0
+
+    int len = 0;  // Initialize length counter
+    Node *p = head;
+    do
+    {
+        len++;  // Increment length for each node
+        p = p->next;  // Move to the next node
+    } while (p != head);  // Continue until we loop back to the first node
+
+    return len;  // Return the total length
+}
+
 // Function to insert an element at a given index in the circular linked list
 void circularLinkedList::insert(int index, int x)
 {
-    if (index < 0 || index > 5) return;  // Check for valid index
+    if (index < 0 || index > length()) return;  // Check for valid index
 
     Node *t = new Node;  // Create a new node
     t->data = x;  // Assign data to the new node
@@ -141,7 +158,7 @@ void circularLinkedList::insert(int index, int x)
 // Function to delete an element at a given index in the circular linked list
 void circularLinkedList::Delete(int index)
 {
-    if (index < 0 || index >= 5 || head == NULL) return;  // Check for valid index and non-empty list
+    if (index < 0 || index >= length() || head == NULL) return;  // Check for valid index and non-empty list
 
     Node *p = head;
     if (index == 0)  // Deletion at the beginning
