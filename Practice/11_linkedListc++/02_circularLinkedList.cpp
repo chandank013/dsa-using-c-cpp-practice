@@ -24,6 +24,8 @@ class circularLinkedList
 
     void Display();  // Function to display the elements of the list
     void rDisplay(Node *p);  // Recursive function to display the elements of the list
+    void insert(int index, int x);  // Function to insert an element at a given index
+    void Delete(int index);  // Function to delete an element at a given index
 };
 
 // Default constructor
@@ -101,6 +103,73 @@ void circularLinkedList::rDisplay(Node *p)
     flag = 0;  // Reset the flag after finishing the display
 }
 
+// Function to insert an element at a given index in the circular linked list
+void circularLinkedList::insert(int index, int x)
+{
+    if (index < 0 || index > 5) return;  // Check for valid index
+
+    Node *t = new Node;  // Create a new node
+    t->data = x;  // Assign data to the new node
+
+    if (index == 0)  // Insertion at the beginning
+    {
+        if (head == NULL)  // If the list is empty
+        {
+            head = t;  // Make the new node the head
+            head->next = head;  // Point it to itself (circular)
+        }
+        else
+        {
+            Node *p = head;
+            while (p->next != head)  // Traverse to the last node
+                p = p->next;
+            p->next = t;  // Link the last node to the new node
+            t->next = head;  // Link the new node to the first node
+            head = t;  // Update the head pointer to the new node
+        }
+    }
+    else  // Insertion at any other position
+    {
+        Node *p = head;
+        for (int i = 0; i < index - 1; i++)  // Traverse to the node before the desired index
+            p = p->next;
+        t->next = p->next;  // Link the new node to the next node
+        p->next = t;  // Link the previous node to the new node
+    }
+}
+
+// Function to delete an element at a given index in the circular linked list
+void circularLinkedList::Delete(int index)
+{
+    if (index < 0 || index >= 5 || head == NULL) return;  // Check for valid index and non-empty list
+
+    Node *p = head;
+    if (index == 0)  // Deletion at the beginning
+    {
+        while (p->next != head)  // Traverse to the last node
+            p = p->next;
+        if (head == p)  // If there's only one node
+        {
+            delete head;  // Delete the head node
+            head = NULL;  // Set head to NULL
+        }
+        else
+        {
+            Node *temp = head;  // Store the current head
+            p->next = head->next;  // Link the last node to the second node
+            head = head->next;  // Update the head pointer to the second node
+            delete temp;  // Delete the old head node
+        }
+    }
+    else  // Deletion at any other position
+    {
+        for (int i = 0; i < index - 1; i++)  // Traverse to the node before the desired index
+            p = p->next;
+        Node *temp = p->next;  // Store the node to be deleted
+        p->next = temp->next;  // Link the previous node to the next node
+        delete temp;  // Delete the target node
+    }
+}
 
 
 int main()
@@ -114,6 +183,18 @@ int main()
     // Display the circular linked list using recursion
     cout << "Recursive Display: ";
     cl.rDisplay(cl.getFirst());
+    cout << endl;
+
+    // Insert an element at index 0
+    cout << "Inserting 10 at index 0:" << endl;
+    cl.insert(0, 10);
+    cl.Display();  // Display the circular linked list after insertion
+    cout << endl;
+
+    // Delete an element at index 2
+    cout << "Deleting element at index 2:" << endl;
+    cl.Delete(2);
+    cl.Display();  // Display the circular linked list after deletion
     cout << endl;
 
     return 0;
