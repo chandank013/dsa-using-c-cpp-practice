@@ -17,12 +17,17 @@ public:
         n = size;
         A = new int[n * (n + 1) / 2]; // Dynamically allocate memory for the lower triangular elements
     }
+
+    int get(int i, int j);
+
+    // Function to display the lower triangular matrix
+    void display();
+
+    // Function to get the dimension of the matrix
+    int GetDimension() { return n; } // Function to get the dimension of the matrix
     
     ~LowerTriangularMatrix();
     void set(int i, int j, int x);
-    int get(int i, int j);
-    void display();
-    int GetDimension() { return n; } // Function to get the dimension of the matrix
 };
 
 void LowerTriangularMatrix::set(int i, int j, int x)
