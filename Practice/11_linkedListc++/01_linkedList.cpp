@@ -52,7 +52,10 @@ class LinkedList
     void concatenate(LinkedList &l2);  // Function to concatenate two linked lists
     void merge(LinkedList &l2);  // Function to merge two sorted linked lists
     void checkLoop();  // Function to check if there is a loop in the linked list
-
+    // middle node of linked list
+    Node* findMiddleNode();  // Function to find the middle node of the linked list
+    // Finding intersection point of two linked list
+    Node* findIntersection(LinkedList &l2);  // Function to find the
 
 };
 
@@ -516,6 +519,112 @@ void LinkedList::checkLoop()
         cout << "No loop found in the linked list." << endl;
 }
 
+// Function to find the middle node of the linked list using length of linked list
+Node* LinkedList::findMiddleNode()
+{
+    int length = Length();  // Get the length of the linked list
+    int middleIndex = length / 2;  // Calculate the middle index
+    Node *p = first;
+
+    for (int i = 0; i < middleIndex; i++)
+    {
+        p = p->next;  // Traverse to the middle node
+    }
+
+    return p;  // Return the middle node
+}
+
+// Function to find the middle node of the linked list using two pointers (slow and fast)
+// Node* LinkedList::findMiddleNode()
+// {
+//     Node *slow = first;
+//     Node *fast = first;
+
+//     while (fast != NULL && fast->next != NULL)
+//     {
+//         slow = slow->next;  // Move slow pointer by one step
+//         fast = fast->next->next;  // Move fast pointer by two steps
+//     }
+
+//     return slow;  // Slow pointer will be at the middle node
+// }
+
+// Function to find the intersection point of two linked lists
+Node* LinkedList::findIntersection(LinkedList &l2)
+{
+    Node *p = first;
+    Node *q = l2.first;
+
+    // Calculate the lengths of both linked lists
+    int len1 = Length();
+    int len2 = l2.Length();
+
+    // Move the pointer of the longer list ahead by the difference in lengths
+    if (len1 > len2)
+    {
+        for (int i = 0; i < len1 - len2; i++)
+            p = p->next;
+    }
+    else
+    {
+        for (int i = 0; i < len2 - len1; i++)
+            q = q->next;
+    }
+
+    // Traverse both lists together to find the intersection point
+    while (p && q)
+    {
+        if (p == q)  // If both pointers meet, return the intersection node
+            return p;
+        p = p->next;
+        q = q->next;
+    }
+
+    return NULL;  // No intersection found
+}
+
+// // function to intersect two linked list using stack
+// Node* LinkedList::findIntersection(LinkedList &l2)
+// {
+//     stack<Node*> stack1, stack2;
+//     Node *p = first;
+//     Node *q = l2.first;
+
+//     // Push all nodes of the first linked list onto stack1
+//     while (p)
+//     {
+//         stack1.push(p);
+//         p = p->next;
+//     }
+
+//     // Push all nodes of the second linked list onto stack2
+//     while (q)
+//     {
+//         stack2.push(q);
+//         q = q->next;
+//     }
+
+//     Node *intersectionNode = NULL;
+
+//     // Pop nodes from both stacks and compare them
+//     while (!stack1.empty() && !stack2.empty())
+//     {
+//         if (stack1.top() == stack2.top())
+//         {
+//             intersectionNode = stack1.top();  // Update intersection node
+//             stack1.pop();
+//             stack2.pop();
+//         }
+//         else
+//         {
+//             break;  // Stop when nodes are different
+//         }
+//     }
+
+//     return intersectionNode;  // Return the intersection node (or NULL if none)
+// }
+
+
 int main()
 {
     int A[] = {1, 2, 3, 4, 5};
@@ -641,6 +750,25 @@ int main()
     // Check for loop in the linked list
     cout << "Checking for loop in the linked list: ";
     l.checkLoop();
+    cout << endl;
+
+    // Find the middle node of the linked list
+    Node *middleNode = l.findMiddleNode();
+    if (middleNode)
+        cout << "Middle node of the linked list: " << middleNode->data << endl;
+    else
+        cout << "The linked list is empty." << endl;
+    cout << endl;
+
+    // Find the intersection point of two linked lists
+    int D[] = {9, 10};
+    LinkedList l4(D, 2);
+    l4.getFirst()->next = l.getFirst()->next->next;  // Create an intersection point
+    Node *intersectionNode = l.findIntersection(l4);
+    if (intersectionNode)
+        cout << "Intersection point of the linked lists: " << intersectionNode->data << endl;
+    else
+        cout << "No intersection point found between the linked lists." << endl;    
     cout << endl;
 
     return 0;
