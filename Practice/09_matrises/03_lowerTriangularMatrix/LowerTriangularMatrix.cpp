@@ -30,20 +30,39 @@ public:
     void set(int i, int j, int x);
 };
 
+// // Function to set the value using row-major mapping
+// void LowerTriangularMatrix::set(int i, int j, int x)
+// {
+//     if (i >= j)
+//         A[i * (i-1)/2+j-1] = x; // Store only lower triangular elements
+// }
+
+// // Function to get the value using row-major mapping
+// int LowerTriangularMatrix::get(int i, int j)
+// {
+//     if (i >= j)
+//         return A[i * (i-1)/2+j-1]; // Return only lower triangular elements
+//     else
+//         return 0; // Non-diagonal elements are zero
+// }
+
+// Function to set the value using column-major mapping
 void LowerTriangularMatrix::set(int i, int j, int x)
 {
     if (i >= j)
-        A[i * (i-1)/2+j-1] = x; // Store only lower triangular elements
+        A[n * (j-1) - (j-2) * (j-1) / 2 + i - j] = x; // Store only lower triangular elements
 }
 
+// Function to get the value using column-major mapping
 int LowerTriangularMatrix::get(int i, int j)
 {
     if (i >= j)
-        return A[i * (i-1)/2+j-1]; // Return only lower triangular elements
+        return A[n * (j-1) - (j-2) * (j-1) / 2 + i - j]; // Return only lower triangular elements
     else
         return 0; // Non-diagonal elements are zero
 }
 
+// Function to display the lower triangular matrix
 void LowerTriangularMatrix::display()
 {
     for (int i = 1; i <= n; i++)
@@ -68,7 +87,7 @@ LowerTriangularMatrix::~LowerTriangularMatrix()
 int main()
 {
     int size;
-    cout << "Enter the size of the matrix: ";
+    cout << "Enter the size of the lower triangular matrix: ";
     cin >> size;
     LowerTriangularMatrix lm(size);
     int x;

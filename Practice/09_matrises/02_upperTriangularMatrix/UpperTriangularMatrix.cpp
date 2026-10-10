@@ -25,12 +25,14 @@ public:
     int GetDimension() { return n; } // Function to get the dimension of the matrix
 };
 
+// Function to set the value using row-major mapping
 void UpperTriangularMatrix::set(int i, int j, int x)
 {
     if (i <= j)
         A[j * (j-1)/2+i-1] = x; // Store only upper triangular elements
 }
 
+// Function to get the value using row-major mapping
 int UpperTriangularMatrix::get(int i, int j)
 {
     if (i <= j)
@@ -38,6 +40,22 @@ int UpperTriangularMatrix::get(int i, int j)
     else
         return 0; // Non-diagonal elements are zero
 }
+
+// //Function to set the value using column-major mapping
+// void UpperTriangularMatrix::set(int i, int j, int x)
+// {
+//     if (i <= j)
+//         A[n * (i-1) - (i-2) * (i-1) / 2 + j - i] = x; // Store only upper triangular elements
+// }
+
+// //Function to get the value using column-major mapping
+// int UpperTriangularMatrix::get(int i, int j)
+// {
+//     if (i <= j)
+//         return A[n * (i-1) - (i-2) * (i-1) / 2 + j - i]; // Return only upper triangular elements
+//     else
+//         return 0; // Non-diagonal elements are zero
+// }
 
 void UpperTriangularMatrix::display()
 {
