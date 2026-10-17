@@ -1,703 +1,630 @@
-#include<stdio.h>
-#include<stdlib.h>
+// #include <stdio.h>
+// #include <stdlib.h>
 
 // struct stack
 // {
-//     int size; // size is used to store the size of stack
-//     int top; // top is used to point the top element of stack
-//     int *S; // S is used to store the elements of stack
+//     int size;
+//     int top;
+//     int *S;
 // };
 
-// void create(struct stack *st)
+// // Create stack
+// int create(struct stack *st)
 // {
 //     printf("Enter size of stack: ");
-//     scanf("%d",&st->size);
-//     st->top=-1;
-//     st->S=(int *)malloc(st->size*sizeof(int));
+//     if (scanf("%d", &st->size) != 1 || st->size <= 0)
+//     {
+//         printf("Invalid stack size\n");
+//         return 0;
+//     }
+
+//     st->top = -1;
+//     st->S = malloc(st->size * sizeof(int));
+
+//     if (st->S == NULL)
+//     {
+//         printf("Memory allocation failed\n");
+//         return 0;
+//     }
+
+//     return 1;
 // }
 
+// // Display stack
 // void Display(struct stack st)
 // {
-//     int i;
-//     for(i=st.top;i>=0;i--)
-//         printf("%d ",st.S[i]);
+//     for (int i = st.top; i >= 0; i--)
+//         printf("%d ", st.S[i]);
+
 //     printf("\n");
 // }
 
-// // push element in stack
-// void push(struct stack *st,int x)
+// // Push element
+// void push(struct stack *st, int x)
 // {
-//     if(st->top==st->size-1)
+//     if (st->top == st->size - 1)
 //         printf("Stack overflow\n");
 //     else
-//     {
-//         st->top++;
-//         st->S[st->top]=x;
-//     }
+//         st->S[++st->top] = x;
 // }
 
-// // pop element from stack
+// // Pop element
 // int pop(struct stack *st)
 // {
-//     int x=-1;
-//     if(st->top==-1)
-//         printf("Stack underflow\n");
-//     else
+//     if (st->top == -1)
 //     {
-//         x=st->S[st->top--];
+//         printf("Stack underflow\n");
+//         return -1;
 //     }
-//     return x;
+
+//     return st->S[st->top--];
 // }
 
-// // peek element from stack
-// int peek(struct stack st,int index)
+// // Peek at a 1-based position from the top
+// int peek(struct stack st, int index)
 // {
-//     int x=-1;
-//     if(st.top-index+1<0)
+//     if (index < 1 || index > st.top + 1)
+//     {
 //         printf("Invalid index\n");
-//     x=st.S[st.top-index+1];
-//     return x;
+//         return -1;
+//     }
+
+//     return st.S[st.top - index + 1];
 // }
 
-// // check if stack is empty
+// // Check if empty
 // int isEmpty(struct stack st)
 // {
-//     if(st.top==-1)
-//         return 1;
-//     return 0;
+//     return st.top == -1;
 // }
 
-// // check if stack is full
+// // Check if full
 // int isFull(struct stack st)
 // {
-//     return st.top==st.size-1;
+//     return st.top == st.size - 1;
 // }
 
-// // stack top element
+// // Get top element
 // int stackTop(struct stack st)
 // {
-//     if(!isEmpty(st))
+//     if (!isEmpty(st))
 //         return st.S[st.top];
+
 //     return -1;
 // }
 
 // int main()
 // {
 //     struct stack st;
-//     create(&st);
-//     push(&st,10);
-//     push(&st,20);
-//     push(&st,30);
-//     push(&st,40);
-   
-//     printf("Peeked element is %d\n",peek(st,2));
-    
+
+//     if (!create(&st))
+//         return 1;
+
+//     push(&st, 10);
+//     push(&st, 20);
+//     push(&st, 30);
+//     push(&st, 40);
+
+//     printf("Stack elements: ");
 //     Display(st);
 
+//     printf("Peeked element: %d\n", peek(st, 2));
+//     printf("Top element: %d\n", stackTop(st));
+//     printf("Popped element: %d\n", pop(&st));
+
+//     printf("Is stack empty? %s\n",
+//            isEmpty(st) ? "Yes" : "No");
+
+//     printf("Is stack full? %s\n",
+//            isFull(st) ? "Yes" : "No");
+
+//     free(st.S);
 //     return 0;
 // }
 
 
 
-//Stack using linked list
-
-struct Node // Node structure
-{
-    int data;
-    struct Node *next;
-}*top=NULL;
-
-// Display stack
-void Display()
-{
-    struct Node *p;
-    p=top;
-    while(p!=NULL)
-    {
-        printf("%d ",p->data);
-        p=p->next;
-    }
-    printf("\n");
-}
-
-// push element in stack
-void push(int x)
-{
-    struct Node *t;
-    t=(struct Node *)malloc(sizeof(struct Node));  // if memory is allocated then it is not full else it is full 
-    if(t==NULL)  
-        printf("Stack is full\n");
-    else
-    {
-        t->data=x;
-        t->next=top;
-        top=t;
-    }
-}
-
-// pop element from stack
-int pop()
-{
-    struct Node *t;
-    int x=-1;
-    if(top==NULL)
-        printf("Stack is Empty\n");
-    else
-    {
-        t=top;
-        top=top->next;
-        x=t->data;
-        free(t);
-    }
-    return x;
-}
-
-// peek element from stack
-int peek(int pos)
-{
-    struct Node *p=top;
-    for(int i=0;p!=NULL && i<pos-1;i++)
-        p=p->next;
-    if(p!=NULL)
-        return p->data;
-    else
-        return -1;
-}
-
-// stack top element
-int stackTop()
-{
-    if(top!=NULL)
-        return top->data;
-    return -1;
-}
-
-// check if stack is empty
-int isEmpty()
-{
-    return top==NULL;
-}
-
-// check if stack is full
-int isFull()
-{
-    struct Node *t;
-    t=(struct Node *)malloc(sizeof(struct Node));
-    int r=t?0:1;
-    free(t);
-    return r;
-}
-
-int main()
-{
-    push(10);
-    push(20);
-    push(30);
-    push(40);
-    push(50);
-    Display();
-    printf("Popped element is %d\n",pop());
-    printf("Peeked element is %d\n",peek(2));
-    printf("Stack top element is %d\n",stackTop());
-    printf("Is stack empty: %d\n",isEmpty());
-    printf("Is stack full: %d\n",isFull());
-    return 0;
-}
-
-// // Output
-// // 50 40 30 20 10
-// // Popped element is 50
-// // Peeked element is 40
-// // Stack top element is 40
-// // Is stack empty: 0
-// // Is stack full: 0
 
 
 
 
+// Parenthesis matching using stack (array implementation)
 
+// #include <stdio.h>
+// #include <stdlib.h>
 
-
-
-// // Paranthesis matching using stack
-// #include<stdio.h>
-// #include<stdlib.h>
-
-// struct Node
+// // Stack structure
+// struct Stack
 // {
-//     char data;
-//     struct Node *next;
-// }*top=NULL;
+//     int size;
+//     int top;
+//     char *S;
+// };
 
-// // Display stack
-// void Display()
+// // Create stack
+// int create(struct Stack *st, int size)
 // {
-//     struct Node *p;
-//     p=top;
-//     while(p!=NULL)
+//     if (size <= 0)
+//         return 0;
+
+//     st->size = size;
+//     st->top = -1;
+//     st->S = malloc(size * sizeof(char));
+
+//     return st->S != NULL;
+// }
+
+// // Push character onto stack
+// int push(struct Stack *st, char x)
+// {
+//     if (st->top == st->size - 1)
+//         return 0;
+
+//     st->S[++st->top] = x;
+//     return 1;
+// }
+
+// // Pop character from stack
+// char pop(struct Stack *st)
+// {
+//     if (st->top == -1)
+//         return '\0';
+
+//     return st->S[st->top--];
+// }
+
+// // Check if stack is empty
+// int isEmpty(struct Stack *st)
+// {
+//     return st->top == -1;
+// }
+
+// // Check opening parentheses
+// int isOpeningParenthesis(char x)
+// {
+//     return x == '(' || x == '{' || x == '[';
+// }
+
+// // Check closing parentheses
+// int isClosingParenthesis(char x)
+// {
+//     return x == ')' || x == '}' || x == ']';
+// }
+
+// // Check matching pair
+// int isMatching(char open, char close)
+// {
+//     return (open == '(' && close == ')') ||
+//            (open == '{' && close == '}') ||
+//            (open == '[' && close == ']');
+// }
+
+// // Check whether expression is balanced
+// int isBalanced(const char *exp)
+// {
+//     struct Stack st;
+
+//     if (!create(&st, 1000))
 //     {
-//         printf("%c ",p->data);
-//         p=p->next;
+//         printf("Stack memory allocation failed\n");
+//         return -1;
 //     }
-//     printf("\n");
-// }
 
-// // push element in stack
-
-// void push(char x)
-// {
-//     struct Node *t;
-//     t=(struct Node *)malloc(sizeof(struct Node));
-//     if(t==NULL)
-//         printf("Stack is full\n");
-//     else
-//     {
-//         t->data=x;
-//         t->next=top;
-//         top=t;
-//     }
-// }
-
-// // pop element from stack
-// char pop()
-// {
-//     struct Node *t;
-//     char x=-1;
-//     if(top==NULL)
-//         printf("Stack is Empty\n");
-//     else
-//     {
-//         t=top;
-//         top=top->next;
-//         x=t->data;
-//         free(t);
-//     }
-//     return x;
-// }
-
-// // check if stack is empty
-// int isEmpty()
-// {
-//     return top==NULL;
-// }
-
-// // check if character is opening paranthesis
-// int isOpeningParanthesis(char x)
-// {
-//     if(x=='(' || x=='{' || x=='[')
-//         return 1;
-//     return 0;
-// }
-
-// // check if character is closing paranthesis
-// int isClosingParanthesis(char x)
-// {
-//     if(x==')' || x=='}' || x==']')
-//         return 1;
-//     return 0;
-// }
-
-// // check if character is matching paranthesis
-// int isMatching(char x,char y)
-// {
-//     if(x=='(' && y==')')
-//         return 1;
-//     if(x=='{' && y=='}')
-//         return 1;
-//     if(x=='[' && y==']')
-//         return 1;
-//     return 0;
-// }
-
-// // check if paranthesis are balanced
-// int isBalanced(char *exp)
-// {
-//     for(int i=0;exp[i]!='\0';i++)
-//     {
-//         if(isOpeningParanthesis(exp[i]))
-//             push(exp[i]);
-//         else if(isClosingParanthesis(exp[i]))
-//         {
-//             if(isEmpty())
-//                 return 0;
-//             if(!isMatching(top->data,exp[i]))
-//                 return 0;
-//             pop();
-//         }
-//     }
-//     return isEmpty()?1:0;
-// }
-
-// // isBalanced for paranthesis matching having paranthesis , square brackets and curly brackets
-// int isBalanced(char *exp)
-// {
-//     for(int i=0;exp[i]!='\0';i++)
-//     {
-//         if(exp[i]=='(' || exp[i]=='{' || exp[i]=='[')
-//             push(exp[i]);
-//         else if(exp[i]==')' || exp[i]=='}' || exp[i]==']')
-//         {
-//             if(isEmpty())
-//                 return 0;
-//             if(exp[i]==')')
-//             {
-//                 if(top->data!='(')
-//                     return 0;
-//             }
-//             else if(exp[i]=='}')
-//             {
-//                 if(top->data!='{')
-//                     return 0;
-//             }
-//             else if(exp[i]==']')
-//             {
-//                 if(top->data!='[')
-//                     return 0;
-//             }
-//             pop();
-//         }
-//     }
-//     return isEmpty()?1:0;
-// }
-
-// // another code of isBalanced
-// int isBalanced(char *exp)
-// {
 //     for (int i = 0; exp[i] != '\0'; i++)
 //     {
-//         if (exp[i] == '(' || exp[i] == '{' || exp[i] == '[')
-//             push(exp[i]);
-//         else if (exp[i] == ')' || exp[i] == '}' || exp[i] == ']')
+//         if (isOpeningParenthesis(exp[i]))
 //         {
-//             if (isEmpty())
+//             if (!push(&st, exp[i]))
+//             {
+//                 free(st.S);
+//                 return -1;
+//             }
+//         }
+//         else if (isClosingParenthesis(exp[i]))
+//         {
+//             if (isEmpty(&st))
+//             {
+//                 free(st.S);
 //                 return 0;
-//             char topChar = top->data;
-//             if ((exp[i] == ')' && topChar != '(') ||
-//                 (exp[i] == '}' && topChar != '{') ||
-//                 (exp[i] == ']' && topChar != '['))
+//             }
+
+//             char open = pop(&st);
+
+//             if (!isMatching(open, exp[i]))
+//             {
+//                 free(st.S);
 //                 return 0;
-//             pop();
+//             }
 //         }
 //     }
-//     return isEmpty() ? 1 : 0;
+
+//     int balanced = isEmpty(&st);
+
+//     free(st.S);
+//     return balanced;
 // }
 
-
-// // isBalanced code using ascii code for paranthesis '(' is 40 and ')' is 41,'{' is 123 and '}' is 125,'[' is 91 and ']' is 93
-// int isBalanced(char *exp)
-// {
-//     for(int i=0;exp[i]!='\0';i++)
-//     {
-//         if(exp[i]==40 || exp[i]==123 || exp[i]==91)
-//             push(exp[i]);
-//         else if(exp[i]==41 || exp[i]==125 || exp[i]==93)
-//         {
-//             if(isEmpty())
-//                 return 0;
-//             if(exp[i]==41)
-//             {
-//                 if(top->data!=40)
-//                     return 0;
-//             }
-//             else if(exp[i]==125)
-//             {
-//                 if(top->data!=123)
-//                     return 0;
-//             }
-//             else if(exp[i]==93)
-//             {
-//                 if(top->data!=91)
-//                     return 0;
-//             }
-//             pop();
-//         }
-//     }
-//     return isEmpty()?1:0;
-// }
-
-
-// // int main()
+// // Main function
 // int main()
 // {
-//     char *exp="{(a+b)*(c-d)}";
-//     printf("%d\n",isBalanced(exp));
-//     return 0;
-// }
+//     const char *exp1 = "{(a+b)*(c-d)}";
+//     const char *exp2 = "{[(a+b)]}";
+//     const char *exp3 = "{(a+b]*c}";
+//     const char *exp4 = "((a+b)";
 
+//     const char *expressions[] = {exp1, exp2, exp3, exp4};
+//     int n = sizeof(expressions) / sizeof(expressions[0]);
 
-// // code for converting infix expression to postfix expression
-// #include<stdio.h>
-// #include<stdlib.h>
-// #include<string.h>
-
-// struct Node
-// {
-//     char data;
-//     struct Node *next;
-// } *top = NULL;
-
-// // Display stack
-// void Display()
-// {
-//     struct Node *p;
-//     p = top;
-//     while (p != NULL)
+//     for (int i = 0; i < n; i++)
 //     {
-//         printf("%c ", p->data);
-//         p = p->next;
-//     }
-//     printf("\n");
-// }
+//         int result = isBalanced(expressions[i]);
 
-// // push element in stack
-// void push(char x)
-// {
-//     struct Node *t;
-//     t = (struct Node *)malloc(sizeof(struct Node));
-//     if (t == NULL)
-//         printf("Stack is full\n");
-//     else
-//     {
-//         t->data = x;
-//         t->next = top;
-//         top = t;
-//     }
-// }
-
-// // pop element from stack
-
-// char pop()
-// {
-//     struct Node *t;
-//     char x = -1;
-//     if (top == NULL)
-//         printf("Stack is Empty\n");
-//     else
-//     {
-//         t = top;
-//         top = top->next;
-//         x = t->data;
-//         free(t);
-//     }
-//     return x;
-// }
-
-// // check if stack is empty
-
-// int isEmpty()
-// {
-//     return top == NULL;
-// }
-
-// // check if character is operand
-
-// int isOperand(char x)
-// {
-//     if (x == '+' || x == '-' || x == '*' || x == '/')
-//         return 0;
-//     return 1;
-// }
-
-// // precedence of operator
-
-// int pre(char x)
-// {
-//     if (x == '+' || x == '-')
-//         return 1;
-//     if (x == '*' || x == '/')
-//         return 2;
-//     return 0;
-// }
-
-// // convert infix expression to postfix expression
-
-// char *InToPost(char *infix)
-// {
-//     int i = 0, j = 0;
-//     char *postfix;
-//     int len = strlen(infix);
-//     postfix = (char *)malloc((len + 2) * sizeof(char));
-//     while (infix[i] != '\0')
-//     {
-//         if (isOperand(infix[i]))
-//             postfix[j++] = infix[i++];
+//         if (result == -1)
+//             printf("%s: Stack error\n", expressions[i]);
 //         else
-//         {
-//             if (pre(infix[i]) > pre(top->data))
-//                 push(infix[i++]);
-//             else
-//             {
-//                 postfix[j++] = pop();
-//             }
-//         }
+//             printf("%s: %s\n", expressions[i],
+//                    result ? "Balanced" : "Not Balanced");
 //     }
-//     while (!isEmpty())
-//         postfix[j++] = pop();
-//     postfix[j] = '\0';
-//     return postfix;
-// }
 
-// int main()
-// {
-//     char *infix = "a+b*c-d/e";
-//     push('#');
-//     char *postfix = InToPost(infix);
-//     printf("%s\n", postfix);
 //     return 0;
 // }
 
 
 
-// // evaluation of postfix expression
-// #include<stdio.h>
-// #include<stdlib.h>
-// #include<string.h>
+// infix to postfix conversion and evaluation using stack (array implementation)
 
-// struct Node
-// {
-//     int data;
-//     struct Node *next;
-// } *top = NULL;
 
-// // Display stack
-// void Display()
-// {
-//     struct Node *p;
-//     p = top;
-//     while (p != NULL)
-//     {
-//         printf("%d ", p->data);
-//         p = p->next;
-//     }
-//     printf("\n");
-// }
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
-// // push element in stack
-// void push(int x)
-// {
-//     struct Node *t;
-//     t = (struct Node *)malloc(sizeof(struct Node));
-//     if (t == NULL)
-//         printf("Stack is full\n");
-//     else
-//     {
-//         t->data = x;
-//         t->next = top;
-//         top = t;
-//     }
-// }
-
-// // pop element from stack
-
-// int pop()
-// {
-//     struct Node *t;
-//     int x = -1;
-//     if (top == NULL)
-//         printf("Stack is Empty\n");
-//     else
-//     {
-//         t = top;
-//         top = top->next;
-//         x = t->data;
-//         free(t);
-//     }
-//     return x;
-// }
-
-// // check if stack is empty
-
-// int isEmpty()
-// {
-//     return top == NULL;
-// }
-
-// // check if character is operand
-
-// int isOperand(char x)
-// {
-//     if (x == '+' || x == '-' || x == '*' || x == '/')
-//         return 0;
-//     return 1;
-// }
-
-// // precedence of operator
-
-// int pre(char x)
-// {
-//     if (x == '+' || x == '-')
-//         return 1;
-//     if (x == '*' || x == '/')
-//         return 2;
-//     return 0;
-// }
-
-// // convert infix expression to postfix expression
-
-// char *InToPost(char *infix)
-// {
-//     int i = 0, j = 0;
-//     char *postfix;
-//     int len = strlen(infix);
-//     postfix = (char *)malloc((len + 2) * sizeof(char));
-//     while (infix[i] != '\0')
-//     {
-//         if (isOperand(infix[i]))
-//             postfix[j++] = infix[i++];
-//         else
-//         {
-//             if (pre(infix[i]) > pre(top->data))
-//                 push(infix[i++]);
-//             else
-//             {
-//                 postfix[j++] = pop();
-//             }
-//         }
-//     }
-//     while (!isEmpty())
-//         postfix[j++] = pop();
-//     postfix[j] = '\0';
-//     return postfix;
-// }
-
-// // evaluate postfix expression
-
-// int Eval(char *postfix)
-// {
-//     int i = 0;
-//     int x1, x2, r = 0;
-//     for (i = 0; postfix[i] != '\0'; i++)
-//     {
-//         if (isOperand(postfix[i]))
-//             push(postfix[i] - '0');
-//         else
-//         {
-//             x2 = pop();
-//             x1 = pop();
-//             switch (postfix[i])
-//             {
-//             case '+':
-//                 r = x1 + x2;
-//                 break;
-//             case '-':
-//                 r = x1 - x2;
-//                 break;
-//             case '*':
-//                 r = x1 * x2;
-//                 break;
-//             case '/':
-//                 r = x1 / x2;
-//                 break;
-//             }
-//             push(r);
-//         }
-//     }
-//     return top->data;
-// }
-
-int main()
+// Stack structure
+struct Stack
 {
-   
+    int size;
+    int top;
+    char *S;
+};
+
+// Create stack
+int create(struct Stack *st, int size)
+{
+    st->size = size;
+    st->top = -1;
+    st->S = malloc(size * sizeof(char));
+
+    return st->S != NULL;
+}
+
+// Push character
+int push(struct Stack *st, char x)
+{
+    if (st->top == st->size - 1)
+        return 0;
+
+    st->S[++st->top] = x;
+    return 1;
+}
+
+// Pop character
+char pop(struct Stack *st)
+{
+    if (st->top == -1)
+        return '\0';
+
+    return st->S[st->top--];
+}
+
+// Check if stack is empty
+int isEmpty(struct Stack *st)
+{
+    return st->top == -1;
+}
+
+// Check if character is an operand
+int isOperand(char x)
+{
+    return (x >= 'a' && x <= 'z') ||
+           (x >= 'A' && x <= 'Z') ||
+           (x >= '0' && x <= '9');
+}
+
+// Operator precedence
+int pre(char x)
+{
+    if (x == '+' || x == '-')
+        return 1;
+
+    if (x == '*' || x == '/')
+        return 2;
+
+    if (x == '^')
+        return 3;
+
     return 0;
 }
 
+// Convert infix to postfix
+char *InToPost(const char *infix)
+{
+    int i = 0, j = 0;
+    int len = strlen(infix);
+
+    struct Stack st;
+
+    if (!create(&st, len + 1))
+        return NULL;
+
+    char *postfix = malloc((len + 1) * sizeof(char));
+
+    if (postfix == NULL)
+    {
+        free(st.S);
+        return NULL;
+    }
+
+    while (infix[i] != '\0')
+    {
+        char x = infix[i];
+
+        // Ignore spaces
+        if (x == ' ' || x == '\t')
+        {
+            i++;
+        }
+        // Operand goes directly to output
+        else if (isOperand(x))
+        {
+            postfix[j++] = x;
+            i++;
+        }
+        // Opening parenthesis
+        else if (x == '(')
+        {
+            if (!push(&st, x))
+                goto error;
+
+            i++;
+        }
+        // Closing parenthesis
+        else if (x == ')')
+        {
+            while (!isEmpty(&st) && st.S[st.top] != '(')
+                postfix[j++] = pop(&st);
+
+            if (isEmpty(&st))
+                goto error;
+
+            pop(&st);  // Remove '('
+            i++;
+        }
+        // Operators
+        else if (pre(x) > 0)
+        {
+            while (!isEmpty(&st) &&
+                   st.S[st.top] != '(' &&
+                   (pre(st.S[st.top]) > pre(x) ||
+                    (pre(st.S[st.top]) == pre(x) && x != '^')))
+            {
+                postfix[j++] = pop(&st);
+            }
+
+            if (!push(&st, x))
+                goto error;
+
+            i++;
+        }
+        else
+        {
+            goto error;
+        }
+    }
+
+    // Pop remaining operators
+    while (!isEmpty(&st))
+    {
+        if (st.S[st.top] == '(')
+            goto error;
+
+        postfix[j++] = pop(&st);
+    }
+
+    postfix[j] = '\0';
+
+    free(st.S);
+    return postfix;
+
+error:
+    free(st.S);
+    free(postfix);
+    return NULL;
+}
+
+// Main function
+int main()
+{
+    const char *infix = "a+b*c-d/e";
+
+    char *postfix = InToPost(infix);
+
+    if (postfix == NULL)
+    {
+        printf("Invalid expression or memory allocation failure\n");
+        return 1;
+    }
+
+    printf("Infix:   %s\n", infix);
+    printf("Postfix: %s\n", postfix);
+
+    free(postfix);
+
+    return 0;
+}
+
+
+// Evaluate postfix expression
+
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <ctype.h>
+#include <string.h>
+
+// Stack structure
+struct Stack
+{
+    int size;
+    int top;
+    int *S;
+};
+
+// Create stack
+int create(struct Stack *st, int size)
+{
+    st->size = size;
+    st->top = -1;
+    st->S = malloc(size * sizeof(int));
+
+    return st->S != NULL;
+}
+
+// Push element onto stack
+int push(struct Stack *st, int x)
+{
+    if (st->top == st->size - 1)
+        return 0;
+
+    st->S[++st->top] = x;
+    return 1;
+}
+
+// Pop element from stack
+int pop(struct Stack *st, int *value)
+{
+    if (st->top == -1)
+        return 0;
+
+    *value = st->S[st->top--];
+    return 1;
+}
+
+// Check if stack is empty
+int isEmpty(struct Stack *st)
+{
+    return st->top == -1;
+}
+
+// Check if character is an operator
+int isOperator(char x)
+{
+    return x == '+' || x == '-' ||
+           x == '*' || x == '/';
+}
+
+// Evaluate postfix expression
+// Supports single-digit operands
+int Eval(const char *postfix, int *result)
+{
+    int len = strlen(postfix);
+    struct Stack st;
+
+    if (!create(&st, len + 1))
+        return 0;
+
+    for (int i = 0; postfix[i] != '\0'; i++)
+    {
+        char ch = postfix[i];
+
+        // Ignore spaces
+        if (isspace((unsigned char)ch))
+            continue;
+
+        // Operand: push numeric value
+        if (isdigit((unsigned char)ch))
+        {
+            if (!push(&st, ch - '0'))
+            {
+                free(st.S);
+                return 0;
+            }
+        }
+        // Operator: pop two operands
+        else if (isOperator(ch))
+        {
+            int x1, x2, r;
+
+            if (!pop(&st, &x2) || !pop(&st, &x1))
+            {
+                free(st.S);
+                return 0;
+            }
+
+            switch (ch)
+            {
+                case '+':
+                    r = x1 + x2;
+                    break;
+
+                case '-':
+                    r = x1 - x2;
+                    break;
+
+                case '*':
+                    r = x1 * x2;
+                    break;
+
+                case '/':
+                    if (x2 == 0)
+                    {
+                        free(st.S);
+                        return 0;
+                    }
+                    r = x1 / x2;
+                    break;
+
+                default:
+                    free(st.S);
+                    return 0;
+            }
+
+            if (!push(&st, r))
+            {
+                free(st.S);
+                return 0;
+            }
+        }
+        else
+        {
+            free(st.S);
+            return 0;
+        }
+    }
+
+    // Exactly one value must remain
+    if (st.top != 0)
+    {
+        free(st.S);
+        return 0;
+    }
+
+    *result = st.S[st.top];
+
+    free(st.S);
+    return 1;
+}
+
+// Main function
+int main()
+{
+    const char *postfix = "23*54*+9-";
+    int result;
+
+    printf("Postfix expression: %s\n", postfix);
+
+    if (Eval(postfix, &result))
+        printf("Result: %d\n", result);
+    else
+        printf("Invalid expression or division by zero\n");
+
+    return 0;
+}
